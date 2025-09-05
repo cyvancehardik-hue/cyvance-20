@@ -339,20 +339,32 @@ const CustomerJourney = () => {
         ))}
       </div>
 
-      {/* Floating CTA */}
-      <div 
-        data-reveal 
-        className="fixed bottom-8 right-8 z-50 lg:relative lg:bottom-auto lg:right-auto lg:mt-16 lg:text-center"
-      >
-        <Button 
-          size="lg" 
-          variant="hero"
-          className="shadow-[0_0_30px_hsl(var(--neon-blue)/0.4)] hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.6)] transition-all duration-300 group"
-        >
-          <Target className="w-4 h-4 mr-2" />
-          Start Your Security Audit
-          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-        </Button>
+      {/* CTA Section */}
+      <div data-reveal className="mt-16 text-center space-y-6">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Button 
+            size="lg" 
+            variant="hero"
+            className="shadow-[0_0_30px_hsl(var(--neon-blue)/0.4)] hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.6)] transition-all duration-300 group"
+          >
+            <Target className="w-4 h-4 mr-2" />
+            Start Your Security Audit
+            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+          </Button>
+          
+          <Button 
+            size="lg" 
+            variant="outline"
+            asChild
+            className="border-[hsl(var(--cyber-purple)/0.3)] text-[hsl(var(--cyber-purple))] hover:bg-[hsl(var(--cyber-purple)/0.1)] hover:shadow-[0_0_20px_hsl(var(--cyber-purple)/0.3)] transition-all duration-300 group"
+          >
+            <a href="/our-process">
+              <Eye className="w-4 h-4 mr-2" />
+              Learn Our Whole Process
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+            </a>
+          </Button>
+        </div>
       </div>
     </section>
   );
