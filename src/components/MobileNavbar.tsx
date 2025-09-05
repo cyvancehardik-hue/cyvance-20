@@ -28,11 +28,18 @@ export const MobileNavbar = ({ activeId, onNavClick }: MobileNavbarProps) => {
     { id: "services", label: "Services", icon: ShieldCheck },
     { id: "stats", label: "Impact", icon: Scan },
     { id: "testimonials", label: "Clients", icon: Network },
+    { id: "/our-process", label: "Our Process", icon: AlertTriangle },
+    { id: "/about-us", label: "About Us", icon: ShieldCheck },
     { id: "contact", label: "Contact", icon: AlertTriangle }
   ];
 
   const handleMenuItemClick = (id: string) => (e: any) => {
-    onNavClick(id)(e);
+    if (id.startsWith('/')) {
+      // Handle route navigation
+      window.location.href = id;
+    } else {
+      onNavClick(id)(e);
+    }
     setIsOpen(false);
   };
 
@@ -104,7 +111,8 @@ export const MobileNavbar = ({ activeId, onNavClick }: MobileNavbarProps) => {
             <ul className="space-y-2">
               {menuItems.map((item, index) => {
                 const Icon = item.icon;
-                const isActive = activeId === item.id;
+                const isRoute = item.id.startsWith('/');
+                const isActive = isRoute ? window.location.pathname === item.id : activeId === item.id;
                 
                 return (
                   <li
@@ -120,7 +128,7 @@ export const MobileNavbar = ({ activeId, onNavClick }: MobileNavbarProps) => {
                     }}
                   >
                     <a
-                      href={`#${item.id}`}
+                      href={isRoute ? item.id : `#${item.id}`}
                       onClick={handleMenuItemClick(item.id)}
                       className={cn(
                         "group flex items-center gap-4 p-4 rounded-xl transition-all duration-300 bg-muted/50 border",

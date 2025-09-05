@@ -22,8 +22,14 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
 
   const handleNavClick = (id: string) => (e: any) => {
     e.preventDefault();
-    const h = headerRef.current?.offsetHeight ?? 72;
-    scrollToId(id, h, 800);
+    if (id.startsWith('/')) {
+      // Handle route navigation
+      window.location.href = id;
+    } else {
+      // Handle section scrolling
+      const h = headerRef.current?.offsetHeight ?? 72;
+      scrollToId(id, h, 800);
+    }
     setMobileMenuOpen(false);
   };
 
@@ -80,25 +86,32 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
             { id: "services", label: "Services" },
             { id: "stats", label: "Impact" },
             { id: "testimonials", label: "Clients" },
+            { id: "/our-process", label: "Our Process" },
+            { id: "/about-us", label: "About Us" },
             { id: "contact", label: "Contact" }
-          ].map(({ id, label }) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              onClick={handleNavClick(id)}
-              className={cn(
-                "story-link relative transition-all duration-200 hover:text-foreground",
-                activeId === id 
-                  ? "text-foreground font-medium" 
-                  : "text-muted-foreground"
-              )}
-            >
-              {label}
-              {activeId === id && (
-                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full" />
-              )}
-            </a>
-          ))}
+          ].map(({ id, label }) => {
+            const isRoute = id.startsWith('/');
+            const isActive = isRoute ? window.location.pathname === id : activeId === id;
+            
+            return (
+              <a
+                key={id}
+                href={isRoute ? id : `#${id}`}
+                onClick={handleNavClick(id)}
+                className={cn(
+                  "story-link relative transition-all duration-200 hover:text-foreground",
+                  isActive 
+                    ? "text-foreground font-medium" 
+                    : "text-muted-foreground"
+                )}
+              >
+                {label}
+                {isActive && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full" />
+                )}
+              </a>
+            );
+          })}
         </div>
 
         {/* Desktop Actions */}
@@ -140,22 +153,29 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
               { id: "services", label: "Services" },
               { id: "stats", label: "Impact" },
               { id: "testimonials", label: "Clients" },
+              { id: "/our-process", label: "Our Process" },
+              { id: "/about-us", label: "About Us" },
               { id: "contact", label: "Contact" }
-            ].map(({ id, label }) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                onClick={handleNavClick(id)}
-                className={cn(
-                  "block py-2 text-sm transition-colors",
-                  activeId === id 
-                    ? "text-foreground font-medium" 
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {label}
-              </a>
-            ))}
+            ].map(({ id, label }) => {
+              const isRoute = id.startsWith('/');
+              const isActive = isRoute ? window.location.pathname === id : activeId === id;
+              
+              return (
+                <a
+                  key={id}
+                  href={isRoute ? id : `#${id}`}
+                  onClick={handleNavClick(id)}
+                  className={cn(
+                    "block py-2 text-sm transition-colors",
+                    isActive 
+                      ? "text-foreground font-medium" 
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {label}
+                </a>
+              );
+            })}
             <div className="flex flex-col gap-3 pt-4 border-t border-border/50">
               <Button variant="neon" className="w-full">
                 Sign In
