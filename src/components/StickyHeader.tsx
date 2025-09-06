@@ -88,10 +88,10 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
             { id: "stats", label: "Impact" },
             { id: "testimonials", label: "Clients" },
             { id: "contact", label: "Contact" },
-            { id: "/dashboard", label: "Our Dashboard" },
+            { id: "dashboard", label: "Our Dashboard" },
             { id: "/about-us", label: "About Us" },
-            { id: "/why-us", label: "Why Us" },
-            { id: "/blogs", label: "Blogs" }
+            { id: "why-us", label: "Why Us" },
+            { id: "blogs", label: "Blogs" }
           ].map(({ id, label }) => {
             const isRoute = id.startsWith('/');
             const isActive = isRoute ? window.location.pathname === id : activeId === id;
@@ -158,10 +158,10 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
               { id: "stats", label: "Impact" },
               { id: "testimonials", label: "Clients" },
               { id: "contact", label: "Contact" },
-              { id: "/dashboard", label: "Our Dashboard" },
+              { id: "dashboard", label: "Our Dashboard" },
               { id: "/about-us", label: "About Us" },
-              { id: "/why-us", label: "Why Us" },
-              { id: "/blogs", label: "Blogs" }
+              { id: "why-us", label: "Why Us" },
+              { id: "blogs", label: "Blogs" }
             ].map(({ id, label }) => {
               const isRoute = id.startsWith('/');
               const isActive = isRoute ? window.location.pathname === id : activeId === id;
