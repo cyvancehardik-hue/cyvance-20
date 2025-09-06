@@ -73,28 +73,47 @@ export const EnhancedCTA = () => {
           {/* Glassmorphic Card Container */}
           <div className="glow-card rounded-3xl p-8 md:p-16 backdrop-blur-2xl bg-gradient-to-br from-[hsl(var(--card)/0.1)] via-[hsl(var(--card)/0.05)] to-transparent border border-[hsl(var(--border)/0.2)] shadow-[0_20px_60px_-20px_hsl(var(--neon-blue)/0.2)]">
             
-            {/* Animated Headline */}
-            <div className="mb-8" data-reveal>
-              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-tight mb-4">
-                <span className="relative inline-block">
-                  Ready to Fortify Your
-                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-[hsl(var(--neon-cyan))] animate-pulse" />
+            {/* Animated Headline with Cyber Matrix Effect */}
+            <div className="mb-8 relative" data-reveal>
+              {/* Background Matrix Pattern */}
+              <div className="absolute inset-0 overflow-hidden opacity-20">
+                <div className="absolute top-0 left-0 w-full h-full">
+                  <div className="cyber-grid opacity-30 transform scale-150 animate-grid-float" />
+                </div>
+              </div>
+              
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-tight mb-4 relative z-10">
+                <span className="relative inline-block group">
+                  <span className="relative z-10">Ready to</span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
                 </span>
                 <br />
-                <span className="relative bg-gradient-to-r from-[hsl(var(--neon-blue))] via-[hsl(var(--cyber-purple))] to-[hsl(var(--neon-cyan))] bg-clip-text text-transparent animate-gradient-x bg-300% text-glow">
-                  Digital Assets?
-                  <div className="absolute -inset-4 bg-gradient-to-r from-[hsl(var(--neon-blue)/0.2)] via-transparent to-[hsl(var(--cyber-purple)/0.2)] blur-xl animate-pulse" />
+                <span className="relative inline-block">
+                  <span className="bg-gradient-to-r from-[hsl(var(--neon-blue))] via-[hsl(var(--cyber-purple))] to-[hsl(var(--neon-cyan))] bg-clip-text text-transparent text-glow font-bold tracking-wide">
+                    Secure Your Enterprise?
+                  </span>
+                  {/* Animated underline */}
+                  <div className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-[hsl(var(--neon-blue))] via-[hsl(var(--cyber-purple))] to-[hsl(var(--neon-cyan))] opacity-60">
+                    <div className="scan-line h-full" />
+                  </div>
+                  {/* Floating accent */}
+                  <Shield className="absolute -top-4 -right-8 w-8 h-8 text-[hsl(var(--neon-blue))] opacity-60 animate-float" />
                 </span>
               </h1>
             </div>
 
-            {/* Animated Subheadline */}
-            <div className="mb-12" data-reveal style={{ animationDelay: '0.2s' }}>
-              <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
-                Join elite organizations that trust Cyvance with their most critical security challenges. 
+            {/* Enhanced Subheadline with Data Stream Effect */}
+            <div className="mb-12 relative" data-reveal style={{ animationDelay: '0.2s' }}>
+              {/* Subtle data stream background */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-[hsl(var(--neon-cyan)/0.2)] to-transparent opacity-50" />
+              
+              <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-3xl mx-auto relative z-10">
+                Join <span className="text-foreground font-semibold bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">thousands of organizations</span> that trust Cyvance with their cybersecurity
                 <br className="hidden md:block" />
-                Receive your personalized assessment and roadmap to 
-                <span className="story-link text-foreground font-medium"> cyber resilience</span>.
+                <span className="inline-block mt-2 px-4 py-1 rounded-full bg-gradient-to-r from-[hsl(var(--card)/0.5)] to-[hsl(var(--card)/0.3)] border border-[hsl(var(--border)/0.3)] backdrop-blur-sm">
+                  <Sparkles className="inline w-4 h-4 mr-2 text-[hsl(var(--neon-cyan))]" />
+                  <span className="text-sm font-medium">Enterprise-grade protection starts here</span>
+                </span>
               </p>
             </div>
 
