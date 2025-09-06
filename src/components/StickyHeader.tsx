@@ -17,7 +17,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
-  const sections = ["services", "stats", "testimonials", "contact"] as const;
+  const sections = ["services", "stats", "testimonials", "contact", "dashboard", "why-us", "blogs"] as const;
   const activeId = useScrollSpy(sections, 80);
 
   const handleNavClick = (id: string) => (e: any) => {

@@ -243,6 +243,11 @@ const Index = () => {
         </div>
 
         {/* Enterprise Security Dashboard */}
+        <div id="dashboard" data-reveal="scale">
+          <SecurityDashboard />
+        </div>
+
+        {/* Stats Section */}
         <div id="stats" data-reveal="scale">
           <SecurityDashboard />
         </div>
@@ -274,12 +279,12 @@ const Index = () => {
         </div>
 
         {/* Why Choose Cyvance - Advanced Cyber-themed Section */}
-        <div data-reveal="scale">
+        <div id="why-us" data-reveal="scale">
           <WhyChooseCyvance />
         </div>
 
         {/* Blog & Resources Intelligence Hub */}
-        <div data-reveal="fade">
+        <div id="blogs" data-reveal="fade">
           <BlogResourcesHub />
         </div>
       </main>
