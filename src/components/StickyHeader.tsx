@@ -84,11 +84,14 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
         <div className="hidden md:flex items-center gap-8 text-sm">
           {[
             { id: "services", label: "Services" },
+            { id: "/our-process", label: "Our Process" },
             { id: "stats", label: "Impact" },
             { id: "testimonials", label: "Clients" },
-            { id: "/our-process", label: "Our Process" },
+            { id: "contact", label: "Contact" },
+            { id: "/dashboard", label: "Our Dashboard" },
             { id: "/about-us", label: "About Us" },
-            { id: "contact", label: "Contact" }
+            { id: "/why-us", label: "Why Us" },
+            { id: "/blogs", label: "Blogs" }
           ].map(({ id, label }) => {
             const isRoute = id.startsWith('/');
             const isActive = isRoute ? window.location.pathname === id : activeId === id;
@@ -151,11 +154,14 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
           <div className="container mx-auto py-4 space-y-4">
             {[
               { id: "services", label: "Services" },
+              { id: "/our-process", label: "Our Process" },
               { id: "stats", label: "Impact" },
               { id: "testimonials", label: "Clients" },
-              { id: "/our-process", label: "Our Process" },
+              { id: "contact", label: "Contact" },
+              { id: "/dashboard", label: "Our Dashboard" },
               { id: "/about-us", label: "About Us" },
-              { id: "contact", label: "Contact" }
+              { id: "/why-us", label: "Why Us" },
+              { id: "/blogs", label: "Blogs" }
             ].map(({ id, label }) => {
               const isRoute = id.startsWith('/');
               const isActive = isRoute ? window.location.pathname === id : activeId === id;
