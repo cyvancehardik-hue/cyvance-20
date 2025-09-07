@@ -1,10 +1,16 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X, ChevronDown } from "lucide-react";
 import { MobileNavbar } from "./MobileNavbar";
 import { scrollToId } from "@/lib/scroll";
 import useScrollSpy from "@/hooks/useScrollSpy";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface StickyHeaderProps {
   className?: string;
@@ -19,6 +25,12 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
   
   const sections = ["services", "stats", "testimonials", "contact", "dashboard", "why-us", "blogs"] as const;
   const activeId = useScrollSpy(sections, 80);
+
+  const companyMenuItems = [
+    { id: "/our-process", label: "Our Process" },
+    { id: "/about-us", label: "About Us" },
+    { id: "why-us", label: "Why Us" }
+  ];
 
   const handleNavClick = (id: string) => (e: any) => {
     e.preventDefault();
@@ -84,13 +96,10 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
         <div className="hidden md:flex items-center gap-8 text-sm">
           {[
             { id: "services", label: "Services" },
-            { id: "/our-process", label: "Our Process" },
             { id: "stats", label: "Impact" },
             { id: "testimonials", label: "Clients" },
             { id: "contact", label: "Contact" },
             { id: "dashboard", label: "Our Dashboard" },
-            { id: "/about-us", label: "About Us" },
-            { id: "why-us", label: "Why Us" },
             { id: "blogs", label: "Blogs" }
           ].map(({ id, label }) => {
             const isRoute = id.startsWith('/');
@@ -115,6 +124,51 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
               </a>
             );
           })}
+          
+          {/* Company Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className={cn(
+              "story-link relative transition-all duration-200 hover:text-foreground flex items-center gap-1",
+              companyMenuItems.some(item => 
+                item.id.startsWith('/') 
+                  ? window.location.pathname === item.id 
+                  : activeId === item.id
+              )
+                ? "text-foreground font-medium" 
+                : "text-muted-foreground"
+            )}>
+              Company
+              <ChevronDown className="h-3 w-3" />
+              {companyMenuItems.some(item => 
+                item.id.startsWith('/') 
+                  ? window.location.pathname === item.id 
+                  : activeId === item.id
+              ) && (
+                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full" />
+              )}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="bg-background/95 backdrop-blur-xl border-border/50">
+              {companyMenuItems.map(({ id, label }) => {
+                const isRoute = id.startsWith('/');
+                const isActive = isRoute ? window.location.pathname === id : activeId === id;
+                
+                return (
+                  <DropdownMenuItem 
+                    key={id}
+                    className={cn(
+                      "cursor-pointer transition-colors",
+                      isActive 
+                        ? "bg-accent text-foreground font-medium" 
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                    onClick={handleNavClick(id)}
+                  >
+                    {label}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Desktop Actions */}
@@ -154,13 +208,10 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
           <div className="container mx-auto py-4 space-y-4">
             {[
               { id: "services", label: "Services" },
-              { id: "/our-process", label: "Our Process" },
               { id: "stats", label: "Impact" },
               { id: "testimonials", label: "Clients" },
               { id: "contact", label: "Contact" },
               { id: "dashboard", label: "Our Dashboard" },
-              { id: "/about-us", label: "About Us" },
-              { id: "why-us", label: "Why Us" },
               { id: "blogs", label: "Blogs" }
             ].map(({ id, label }) => {
               const isRoute = id.startsWith('/');
@@ -182,6 +233,31 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
                 </a>
               );
             })}
+            
+            {/* Company Section in Mobile */}
+            <div className="border-t border-border/50 pt-4">
+              <div className="text-sm font-medium text-foreground mb-2">Company</div>
+              {companyMenuItems.map(({ id, label }) => {
+                const isRoute = id.startsWith('/');
+                const isActive = isRoute ? window.location.pathname === id : activeId === id;
+                
+                return (
+                  <a
+                    key={id}
+                    href={isRoute ? id : `#${id}`}
+                    onClick={handleNavClick(id)}
+                    className={cn(
+                      "block py-2 pl-4 text-sm transition-colors",
+                      isActive 
+                        ? "text-foreground font-medium" 
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {label}
+                  </a>
+                );
+              })}
+            </div>
             <div className="flex flex-col gap-3 pt-4 border-t border-border/50">
               <Button variant="neon" className="w-full">
                 Sign In
