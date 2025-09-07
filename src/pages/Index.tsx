@@ -242,13 +242,13 @@ const Index = () => {
           <CustomerJourney />
         </div>
 
-        {/* Enterprise Security Dashboard */}
-        <div id="dashboard" data-reveal="scale">
+        {/* Stats Section - Impact Dashboard */}
+        <div id="stats" data-reveal="scale">
           <SecurityDashboard />
         </div>
 
-        {/* Stats Section */}
-        <div id="stats" data-reveal="scale">
+        {/* Enterprise Security Dashboard */}
+        <div id="dashboard" data-reveal="scale">
           <SecurityDashboard />
         </div>
 
