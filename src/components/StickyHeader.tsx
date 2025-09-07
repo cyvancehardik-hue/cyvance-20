@@ -128,7 +128,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
           {/* Company Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger className={cn(
-              "story-link relative transition-all duration-200 hover:text-foreground flex items-center gap-1",
+              "story-link relative transition-all duration-200 hover:text-foreground inline-flex items-center gap-1 outline-none",
               companyMenuItems.some(item => 
                 item.id.startsWith('/') 
                   ? window.location.pathname === item.id 
@@ -138,7 +138,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
                 : "text-muted-foreground"
             )}>
               Company
-              <ChevronDown className="h-3 w-3" />
+              <ChevronDown className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180" />
               {companyMenuItems.some(item => 
                 item.id.startsWith('/') 
                   ? window.location.pathname === item.id 
@@ -147,7 +147,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
                 <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full" />
               )}
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-background/95 backdrop-blur-xl border-border/50">
+            <DropdownMenuContent align="start" className="bg-background/95 backdrop-blur-xl border-border/50 min-w-[150px]">
               {companyMenuItems.map(({ id, label }) => {
                 const isRoute = id.startsWith('/');
                 const isActive = isRoute ? window.location.pathname === id : activeId === id;
@@ -156,7 +156,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
                   <DropdownMenuItem 
                     key={id}
                     className={cn(
-                      "cursor-pointer transition-colors",
+                      "cursor-pointer transition-colors focus:bg-accent focus:text-accent-foreground",
                       isActive 
                         ? "bg-accent text-foreground font-medium" 
                         : "text-muted-foreground hover:text-foreground"
