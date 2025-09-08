@@ -1,6 +1,8 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Shield, Users, Zap, Award, Lock, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const valuePropositions = [
   {
@@ -50,6 +52,7 @@ const valuePropositions = [
 export const WhyChooseCyvance = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const navigate = useNavigate();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -238,13 +241,14 @@ export const WhyChooseCyvance = () => {
                 Join thousands of organizations that trust Cyvance with their cybersecurity
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.button 
-                  className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
+                <Button 
+                  variant="hero"
+                  size="lg"
+                  onClick={() => navigate('/why-cyvance')}
+                  className="px-8 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  Start Free Assessment
-                </motion.button>
+                  Learn More About Cyvance
+                </Button>
                 <motion.button 
                   className="px-8 py-3 border border-border text-foreground font-semibold rounded-lg hover:bg-muted/50 transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
