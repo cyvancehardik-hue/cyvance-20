@@ -383,35 +383,107 @@ const WhyCyvance = () => {
         </div>
       </section>
 
-      {/* Our Why Section */}
+      {/* Our Why Section - Enhanced with Parallax & Scroll Animations */}
       <section ref={visionRef} className="py-20 md:py-32 relative overflow-hidden">
-        {/* Enhanced Background Effects */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-blue)/0.05)] via-transparent to-[hsl(var(--cyber-purple)/0.05)] animate-pulse" />
-          <div 
+        {/* Enhanced Background Effects with Parallax */}
+        <motion.div 
+          className="absolute inset-0 overflow-hidden"
+          style={{
+            y: visionInView ? 0 : 100,
+            opacity: visionInView ? 1 : 0,
+          }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-blue)/0.08)] via-transparent to-[hsl(var(--cyber-purple)/0.08)]"
+            animate={{ 
+              backgroundPosition: ['0% 0%', '100% 100%'],
+            }}
+            transition={{ 
+              duration: 20, 
+              repeat: Infinity, 
+              repeatType: "reverse",
+              ease: "linear"
+            }}
+          />
+          <motion.div 
             className="absolute inset-0 opacity-20"
             style={{
               backgroundImage: `
-                linear-gradient(rgba(0, 170, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 170, 255, 0.1) 1px, transparent 1px)
+                linear-gradient(rgba(0, 170, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 170, 255, 0.15) 1px, transparent 1px)
               `,
-              backgroundSize: "60px 60px",
-              animation: "float 20s ease-in-out infinite",
+              backgroundSize: "80px 80px",
+            }}
+            animate={{
+              backgroundPosition: ['0px 0px', '80px 80px']
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: "linear"
             }}
           />
-          <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[hsl(var(--neon-cyan))/0.6] to-transparent animate-pulse" />
-          <div className="absolute bottom-1/4 right-0 w-full h-0.5 bg-gradient-to-l from-transparent via-[hsl(var(--electric-green))/0.6] to-transparent animate-pulse" style={{ animationDelay: "1s" }} />
-        </div>
+          {/* Animated scan lines */}
+          <motion.div 
+            className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[hsl(var(--neon-cyan))] to-transparent"
+            initial={{ x: '-100%', opacity: 0 }}
+            animate={visionInView ? { 
+              x: '100%',
+              opacity: [0, 1, 1, 0]
+            } : {}}
+            transition={{ 
+              duration: 2.5,
+              repeat: Infinity,
+              repeatDelay: 3,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-0 right-0 w-full h-0.5 bg-gradient-to-l from-transparent via-[hsl(var(--electric-green))] to-transparent"
+            initial={{ x: '100%', opacity: 0 }}
+            animate={visionInView ? { 
+              x: '-100%',
+              opacity: [0, 1, 1, 0]
+            } : {}}
+            transition={{ 
+              duration: 2.5,
+              repeat: Infinity,
+              repeatDelay: 3,
+              delay: 1.25,
+              ease: "easeInOut"
+            }}
+          />
+        </motion.div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left: Story Copy */}
+            {/* Left: Story Copy with Staggered Animation */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={visionInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, x: -80, scale: 0.95 }}
+              animate={visionInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+              transition={{ 
+                duration: 1, 
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }}
             >
-              <h2 className="font-display text-3xl md:text-4xl mb-6">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={visionInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.2, duration: 0.8 }}
+              >
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] border border-[hsl(var(--neon-blue)/0.3)] text-xs font-mono uppercase tracking-wider mb-6">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--electric-green))] animate-pulse" />
+                  Our Mission
+                </div>
+              </motion.div>
+
+              <motion.h2 
+                className="font-display text-4xl md:text-5xl mb-6 text-glow"
+                initial={{ opacity: 0, y: 30 }}
+                animate={visionInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3, duration: 0.8 }}
+              >
                 Our Vision Story
                 <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
                   The Future of Security
