@@ -488,7 +488,7 @@ const WhyCyvance = () => {
                 <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
                   The Future of Security
                 </span>
-              </h2>
+              </motion.h2>
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                 <p className="text-xl font-semibold text-foreground">
                   Cybersecurity isn't just about firewalls and patches.
