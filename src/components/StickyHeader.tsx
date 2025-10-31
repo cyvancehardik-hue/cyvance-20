@@ -29,7 +29,8 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
   const companyMenuItems = [
     { id: "/our-process", label: "Our Process" },
     { id: "/about-us", label: "About Us" },
-    { id: "why-us", label: "Why Us" }
+    { id: "why-us", label: "Why Us" },
+    { id: "/milestones", label: "Milestones", special: true }
   ];
 
   const handleNavClick = (id: string) => (e: any) => {
@@ -148,7 +149,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
               )}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="bg-background/95 backdrop-blur-xl border-border/50 min-w-[150px]">
-              {companyMenuItems.map(({ id, label }) => {
+              {companyMenuItems.map(({ id, label, special }) => {
                 const isRoute = id.startsWith('/');
                 const isActive = isRoute ? window.location.pathname === id : activeId === id;
                 
@@ -157,6 +158,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
                     key={id}
                     className={cn(
                       "cursor-pointer transition-colors focus:bg-accent focus:text-accent-foreground",
+                      special && "milestones-glitch-pulse",
                       isActive 
                         ? "bg-accent text-foreground font-medium" 
                         : "text-muted-foreground hover:text-foreground"
@@ -237,7 +239,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
             {/* Company Section in Mobile */}
             <div className="border-t border-border/50 pt-4">
               <div className="text-sm font-medium text-foreground mb-2">Company</div>
-              {companyMenuItems.map(({ id, label }) => {
+              {companyMenuItems.map(({ id, label, special }) => {
                 const isRoute = id.startsWith('/');
                 const isActive = isRoute ? window.location.pathname === id : activeId === id;
                 
@@ -248,6 +250,7 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
                     onClick={handleNavClick(id)}
                     className={cn(
                       "block py-2 pl-4 text-sm transition-colors",
+                      special && "milestones-glitch-pulse",
                       isActive 
                         ? "text-foreground font-medium" 
                         : "text-muted-foreground hover:text-foreground"

@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import AboutUs from "./pages/AboutUs";
 import OurProcess from "./pages/OurProcess";
 import WhyCyvance from "./pages/WhyCyvance";
+import Milestones from "./pages/Milestones";
 import ScrollRevealInit from "@/components/ScrollRevealInit";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/our-process" element={<OurProcess />} />
           <Route path="/why-cyvance" element={<WhyCyvance />} />
+          <Route path="/milestones" element={<Milestones />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
