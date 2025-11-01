@@ -1,9 +1,9 @@
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Shield, Lock, Network, Zap, Globe, Users, Award, Rocket, Target, Brain, Server } from "lucide-react";
+import { Shield, Lock, Network, Zap, Globe, Users, Award, Rocket, Target, Brain, Server, Sparkles, Code2, Database } from "lucide-react";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
-// Cursor-reactive Particle Field
+// Enhanced Cursor-reactive Particle Field with 3D depth
 const CursorParticleField = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseX = useMotionValue(0);
@@ -22,20 +22,28 @@ const CursorParticleField = () => {
     const particles: Array<{
       x: number;
       y: number;
+      z: number;
       size: number;
       speedX: number;
       speedY: number;
+      speedZ: number;
       opacity: number;
+      color: string;
     }> = [];
 
-    for (let i = 0; i < 100; i++) {
+    const colors = ['rgba(0, 255, 255,', 'rgba(138, 43, 226,', 'rgba(147, 51, 234,'];
+
+    for (let i = 0; i < 150; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 1,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        opacity: Math.random() * 0.5 + 0.2,
+        z: Math.random() * 1000,
+        size: Math.random() * 3 + 1,
+        speedX: (Math.random() - 0.5) * 0.8,
+        speedY: (Math.random() - 0.5) * 0.8,
+        speedZ: (Math.random() - 0.5) * 2,
+        opacity: Math.random() * 0.6 + 0.2,
+        color: colors[Math.floor(Math.random() * colors.length)],
       });
     }
 
@@ -49,44 +57,69 @@ const CursorParticleField = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((particle, i) => {
-        // Mouse attraction
-        const dx = mouseXVal - particle.x;
-        const dy = mouseYVal - particle.y;
+        // 3D perspective calculation
+        const perspective = 1000;
+        const scale = perspective / (perspective + particle.z);
+        const x2d = (particle.x - canvas.width / 2) * scale + canvas.width / 2;
+        const y2d = (particle.y - canvas.height / 2) * scale + canvas.height / 2;
+
+        // Mouse attraction with depth
+        const dx = mouseXVal - x2d;
+        const dy = mouseYVal - y2d;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        if (distance < 150) {
-          const force = (150 - distance) / 150;
-          particle.x += dx * force * 0.01;
-          particle.y += dy * force * 0.01;
+        if (distance < 200) {
+          const force = (200 - distance) / 200;
+          particle.x += dx * force * 0.015;
+          particle.y += dy * force * 0.015;
+          particle.z -= force * 50;
         }
 
         particle.x += particle.speedX;
         particle.y += particle.speedY;
+        particle.z += particle.speedZ;
 
-        if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+        // Wrap around edges
+        if (particle.x < 0) particle.x = canvas.width;
+        if (particle.x > canvas.width) particle.x = 0;
+        if (particle.y < 0) particle.y = canvas.height;
+        if (particle.y > canvas.height) particle.y = 0;
+        if (particle.z < -500) particle.z = 500;
+        if (particle.z > 500) particle.z = -500;
 
-        // Draw particle
+        // Draw particle with depth-based opacity
+        const depthOpacity = particle.opacity * (1 - Math.abs(particle.z) / 1000);
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 255, 255, ${particle.opacity})`;
+        ctx.arc(x2d, y2d, particle.size * scale, 0, Math.PI * 2);
+        ctx.fillStyle = `${particle.color} ${depthOpacity})`;
         ctx.fill();
+        
+        // Add glow effect
+        ctx.shadowBlur = 10 * scale;
+        ctx.shadowColor = `${particle.color} 0.8)`;
 
-        // Draw connections
+        // Draw connections with depth awareness
         particles.slice(i + 1).forEach((otherParticle) => {
-          const dx2 = particle.x - otherParticle.x;
-          const dy2 = particle.y - otherParticle.y;
-          const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+          const otherScale = perspective / (perspective + otherParticle.z);
+          const ox2d = (otherParticle.x - canvas.width / 2) * otherScale + canvas.width / 2;
+          const oy2d = (otherParticle.y - canvas.height / 2) * otherScale + canvas.height / 2;
+          
+          const dx2 = x2d - ox2d;
+          const dy2 = y2d - oy2d;
+          const dz = particle.z - otherParticle.z;
+          const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2 + dz * dz / 100);
 
-          if (dist < 100) {
+          if (dist < 120) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(138, 43, 226, ${0.2 * (1 - dist / 100)})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
+            ctx.strokeStyle = `${particle.color} ${0.3 * (1 - dist / 120)})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(x2d, y2d);
+            ctx.lineTo(ox2d, oy2d);
             ctx.stroke();
           }
         });
+        
+        ctx.shadowBlur = 0;
       });
 
       requestAnimationFrame(animate);
@@ -228,7 +261,7 @@ const HolographicSphere = () => {
   );
 };
 
-// Floating Glass Card
+// Enhanced Floating Glass Card with magnetic effect
 const FloatingGlassCard = ({ 
   title, 
   year, 
@@ -243,52 +276,164 @@ const FloatingGlassCard = ({
   delay: number;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(mouseY, [-100, 100], [8, -8]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(mouseX, [-100, 100], [-8, 8]), { stiffness: 300, damping: 30 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (rect) {
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      mouseX.set(e.clientX - centerX);
+      mouseY.set(e.clientY - centerY);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    setIsHovered(false);
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -10, scale: 1.02 }}
+      ref={cardRef}
+      initial={{ opacity: 0, y: 50, rotateX: -15 }}
+      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ delay, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      style={{ 
+        rotateX, 
+        rotateY,
+        transformStyle: "preserve-3d",
+        transformPerspective: 1000
+      }}
+      whileHover={{ z: 50, scale: 1.03 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="group relative p-6 rounded-2xl backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-cyan-500/50 transition-all duration-500 cursor-pointer overflow-hidden"
+      className="group relative p-8 rounded-3xl backdrop-blur-xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 hover:border-cyan-500/60 transition-all duration-700 cursor-pointer overflow-hidden"
     >
-      {/* Glow effect */}
+      {/* Animated gradient overlay */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-purple-500/0 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        animate={isHovered ? { 
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+        style={{
+          background: 'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 255, 255, 0.15), transparent 60%)',
+        }}
+        animate={isHovered ? {
           background: [
-            'radial-gradient(circle at 0% 0%, rgba(0, 255, 255, 0.1), transparent 50%)',
-            'radial-gradient(circle at 100% 100%, rgba(138, 43, 226, 0.1), transparent 50%)',
-            'radial-gradient(circle at 0% 0%, rgba(0, 255, 255, 0.1), transparent 50%)',
+            'radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.15), transparent 60%)',
+            'radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.15), transparent 60%)',
+            'radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.15), transparent 60%)',
+            'radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.15), transparent 60%)',
+            'radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.15), transparent 60%)',
           ]
         } : {}}
-        transition={{ duration: 3, repeat: Infinity }}
+        transition={{ duration: 4, repeat: Infinity }}
       />
 
-      <div className="relative z-10">
-        <div className="flex items-start justify-between mb-4">
-          <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 group-hover:border-cyan-400 transition-colors">
-            <Icon className="w-6 h-6 text-cyan-400" />
-          </div>
-          <span className="text-sm font-mono text-cyan-400/70 group-hover:text-cyan-400 transition-colors">
+      {/* Shimmer effect */}
+      <motion.div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100"
+        animate={isHovered ? {
+          background: [
+            'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%) -100% 0 / 200% 100%',
+            'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%) 100% 0 / 200% 100%'
+          ]
+        } : {}}
+        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }}
+      />
+
+      <div className="relative z-10" style={{ transform: "translateZ(20px)" }}>
+        <div className="flex items-start justify-between mb-6">
+          <motion.div 
+            className="p-4 rounded-2xl bg-gradient-to-br from-cyan-500/30 to-purple-500/30 border border-cyan-500/40 group-hover:border-cyan-400 group-hover:shadow-[0_0_30px_rgba(0,255,255,0.3)] transition-all duration-500"
+            whileHover={{ rotate: 360, scale: 1.1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Icon className="w-7 h-7 text-cyan-300" />
+          </motion.div>
+          <motion.span 
+            className="text-sm font-mono text-cyan-400/70 group-hover:text-cyan-300 transition-colors px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20"
+            whileHover={{ scale: 1.05 }}
+          >
             {year}
-          </span>
+          </motion.span>
         </div>
 
-        <h3 className="text-xl font-bold mb-2 text-white group-hover:text-cyan-300 transition-colors">
+        <motion.h3 
+          className="text-2xl font-bold mb-3 text-white group-hover:text-cyan-300 transition-colors"
+          animate={isHovered ? { x: [0, 2, 0] } : {}}
+          transition={{ duration: 0.3 }}
+        >
           {title}
-        </h3>
-        <p className="text-sm text-gray-400 leading-relaxed">
+        </motion.h3>
+        <motion.p 
+          className="text-sm text-gray-400 group-hover:text-gray-300 leading-relaxed transition-colors"
+          animate={isHovered ? { opacity: [0.7, 1] } : { opacity: 0.7 }}
+        >
           {description}
-        </p>
+        </motion.p>
       </div>
 
-      {/* Corner accents */}
-      <div className="absolute top-0 left-0 w-20 h-20 border-t-2 border-l-2 border-cyan-500/0 group-hover:border-cyan-500/50 transition-all duration-500 rounded-tl-2xl" />
-      <div className="absolute bottom-0 right-0 w-20 h-20 border-b-2 border-r-2 border-purple-500/0 group-hover:border-purple-500/50 transition-all duration-500 rounded-br-2xl" />
+      {/* Animated corner accents */}
+      <motion.div 
+        className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-cyan-500/0 group-hover:border-cyan-500/60 transition-all duration-700 rounded-tl-3xl"
+        animate={isHovered ? { 
+          width: 32, 
+          height: 32,
+          borderColor: 'rgba(0, 255, 255, 0.8)'
+        } : { 
+          width: 96, 
+          height: 96 
+        }}
+      />
+      <motion.div 
+        className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-purple-500/0 group-hover:border-purple-500/60 transition-all duration-700 rounded-br-3xl"
+        animate={isHovered ? { 
+          width: 32, 
+          height: 32,
+          borderColor: 'rgba(138, 43, 226, 0.8)'
+        } : { 
+          width: 96, 
+          height: 96 
+        }}
+      />
+
+      {/* Floating particles on hover */}
+      {isHovered && (
+        <>
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-cyan-400 rounded-full"
+              initial={{ 
+                x: Math.random() * 100 - 50, 
+                y: Math.random() * 100 - 50,
+                opacity: 0 
+              }}
+              animate={{ 
+                x: Math.random() * 200 - 100,
+                y: Math.random() * 200 - 100,
+                opacity: [0, 1, 0]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                delay: i * 0.2
+              }}
+              style={{
+                left: '50%',
+                top: '50%'
+              }}
+            />
+          ))}
+        </>
+      )}
     </motion.div>
   );
 };
@@ -383,45 +528,99 @@ export default function Milestones() {
     <div ref={containerRef} className="relative min-h-screen bg-[#0a0a0f] overflow-hidden">
       <CursorTrail />
 
-      {/* 1. Hero Section */}
+      {/* 1. Hero Section - Enhanced */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <CyberGrid />
         <CursorParticleField />
         
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-[#0a0a0f]" />
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] animate-pulse-slow" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] animate-pulse-slow" style={{ animationDelay: '1s' }} />
+        {/* Multiple animated gradient layers */}
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-[#0a0a0f]"
+          animate={{
+            background: [
+              'linear-gradient(180deg, transparent 0%, rgba(88, 28, 135, 0.05) 50%, #0a0a0f 100%)',
+              'linear-gradient(180deg, transparent 0%, rgba(6, 182, 212, 0.05) 50%, #0a0a0f 100%)',
+              'linear-gradient(180deg, transparent 0%, rgba(88, 28, 135, 0.05) 50%, #0a0a0f 100%)',
+            ]
+          }}
+          transition={{ duration: 10, repeat: Infinity }}
+        />
+        
+        {/* Animated orbs */}
+        <motion.div 
+          className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px]"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px]"
+          animate={{
+            x: [0, -100, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
+        <motion.div 
+          className="absolute top-1/2 left-1/2 w-64 h-64 bg-cyan-400/10 rounded-full blur-[100px]"
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.1, 0.2, 0.1]
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        />
 
         <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
+            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.h1 
-              className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient"
+              className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent bg-[length:200%_auto]"
               animate={{ 
                 backgroundPosition: ['0% center', '200% center', '0% center'],
               }}
               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             >
-              Every Innovation
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+              >
+                Every Innovation
+              </motion.span>
               <br />
-              <span className="inline-block animate-glitch">Left a Trace</span>
+              <motion.span 
+                className="inline-block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+              >
+                <span className="animate-glitch">Left a Trace</span>
+              </motion.span>
             </motion.h1>
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.9 }}
             className="text-xl md:text-2xl text-gray-300 mb-12 font-light"
           >
-            From concept to command, we redefined digital defense.
+            <motion.span
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              From concept to command, we redefined digital defense.
+            </motion.span>
           </motion.p>
 
-          {/* Scroll indicator */}
+          {/* Enhanced scroll indicator */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -429,13 +628,54 @@ export default function Milestones() {
             className="absolute bottom-12 left-1/2 -translate-x-1/2"
           >
             <motion.div
-              animate={{ y: [0, 10, 0] }}
+              animate={{ 
+                y: [0, 15, 0],
+                boxShadow: [
+                  '0 0 20px rgba(0, 255, 255, 0.3)',
+                  '0 0 40px rgba(0, 255, 255, 0.6)',
+                  '0 0 20px rgba(0, 255, 255, 0.3)'
+                ]
+              }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="p-3 rounded-full border-2 border-cyan-400/50 hover:border-cyan-400 cursor-pointer backdrop-blur-sm bg-cyan-500/5 hover:bg-cyan-500/10 transition-colors"
+              whileHover={{ scale: 1.2, rotate: 180 }}
+              className="p-4 rounded-full border-2 border-cyan-400/50 hover:border-cyan-400 cursor-pointer backdrop-blur-sm bg-cyan-500/10 hover:bg-cyan-500/20 transition-colors relative group"
             >
               <Zap className="w-6 h-6 text-cyan-400" />
+              <motion.div
+                className="absolute inset-0 rounded-full bg-cyan-400/20"
+                animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
             </motion.div>
           </motion.div>
+
+          {/* Floating sparkles */}
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-cyan-400 rounded-full"
+              initial={{ 
+                x: Math.random() * 400 - 200,
+                y: Math.random() * 400 - 200,
+                opacity: 0
+              }}
+              animate={{ 
+                y: [0, -100, 0],
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0]
+              }}
+              transition={{ 
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: i * 0.4
+              }}
+              style={{
+                left: '50%',
+                top: '50%',
+                filter: 'blur(1px)'
+              }}
+            />
+          ))}
         </div>
       </section>
 
