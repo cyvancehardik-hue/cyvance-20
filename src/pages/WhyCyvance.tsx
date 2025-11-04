@@ -1,6 +1,6 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { Search, Zap, Rocket, ChevronDown, Shield, Lock, Eye, Menu, X, Scan, ArrowRight, ShieldCheck, Network, AlertTriangle, Cloud } from "lucide-react";
+import { Search, Zap, Rocket, ChevronDown, Shield, Lock, Eye, Menu, X, Scan, ArrowRight, ShieldCheck, Network, AlertTriangle, Cloud, Sparkles, Layers, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { StickyHeader } from "@/components/StickyHeader";
@@ -66,12 +66,28 @@ const WhyCyvance = () => {
   const differentiatorRef = useRef<HTMLDivElement>(null);
   const processRef = useRef<HTMLDivElement>(null);
   const proofRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   
   const heroInView = useInView(heroRef, { once: true });
-  const visionInView = useInView(visionRef, { once: true, margin: "-100px" });
-  const differentiatorInView = useInView(differentiatorRef, { once: true, margin: "-100px" });
-  const processInView = useInView(processRef, { once: true, margin: "-100px" });
-  const proofInView = useInView(proofRef, { once: true, margin: "-100px" });
+  const visionInView = useInView(visionRef, { once: false, margin: "-100px" });
+  const differentiatorInView = useInView(differentiatorRef, { once: false, margin: "-100px" });
+  const processInView = useInView(processRef, { once: false, margin: "-100px" });
+  const proofInView = useInView(proofRef, { once: false, margin: "-100px" });
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const backgroundY = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
+  const scaleProgress = useTransform(smoothProgress, [0, 0.5, 1], [1, 1.2, 1]);
+  const opacityProgress = useTransform(smoothProgress, [0, 0.5, 1], [1, 0.8, 1]);
 
   // Mouse tracking for interactive background
   useEffect(() => {
@@ -101,14 +117,50 @@ const WhyCyvance = () => {
   }, [heroInView]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div ref={containerRef} className="min-h-screen bg-background">
       {/* Use the same header as main page */}
       <StickyHeader />
+
+      {/* Floating Particles System */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {[...Array(30)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: Math.random() * 4 + 2,
+              height: Math.random() * 4 + 2,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: i % 3 === 0 
+                ? 'hsl(var(--neon-blue))' 
+                : i % 3 === 1 
+                ? 'hsl(var(--cyber-purple))' 
+                : 'hsl(var(--electric-green))',
+            }}
+            animate={{
+              y: [0, Math.random() * -300 - 100, 0],
+              x: [0, Math.random() * 100 - 50, 0],
+              opacity: [0, 0.8, 0],
+              scale: [0, 1.5, 0],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 15,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
 
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden cyber-grid pt-16">
         {/* Enhanced Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" 
+          style={{ opacity: opacityProgress }}
+        />
         
         {/* Interactive Background Grid */}
         <motion.div 
@@ -131,30 +183,59 @@ const WhyCyvance = () => {
           }}
         />
 
-        {/* Floating particles */}
+        {/* Enhanced Floating particles with 3D effect */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full opacity-60"
+              className="absolute rounded-full blur-sm"
               style={{
-                left: `${20 + i * 15}%`,
-                top: `${30 + i * 10}%`,
+                width: Math.random() * 8 + 4,
+                height: Math.random() * 8 + 4,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                background: `radial-gradient(circle, ${
+                  i % 3 === 0 
+                    ? 'hsl(var(--neon-blue))' 
+                    : i % 3 === 1 
+                    ? 'hsl(var(--cyber-purple))' 
+                    : 'hsl(var(--electric-green))'
+                }, transparent)`,
               }}
               animate={{
-                y: [-20, 20, -20],
-                x: [-10, 10, -10],
-                opacity: [0.3, 0.8, 0.3],
+                y: [0, Math.random() * -100 - 50, 0],
+                x: [0, Math.random() * 50 - 25, 0],
+                opacity: [0.2, 0.9, 0.2],
+                scale: [0.8, 1.5, 0.8],
+                rotate: [0, 360, 0],
               }}
               transition={{
-                duration: 4 + i,
+                duration: Math.random() * 8 + 6,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: i * 0.5,
+                delay: i * 0.3,
               }}
             />
           ))}
         </div>
+
+        {/* Magnetic cursor glow */}
+        <motion.div
+          className="absolute w-96 h-96 rounded-full pointer-events-none blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, hsl(var(--neon-blue)/0.3), transparent 70%)',
+            left: mousePosition.x - 192,
+            top: mousePosition.y - 192,
+          }}
+          animate={{
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
 
         {/* Animated Cyvance Logo */}
         <motion.div
@@ -285,24 +366,38 @@ const WhyCyvance = () => {
                 animate={showSubheadline ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.6, duration: 0.8 }}
               >
-                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300">
-                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--electric-green)/0.2)] to-[hsl(var(--electric-green)/0.05)] border border-[hsl(var(--electric-green)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--electric-green)/0.3)] transition-all duration-300">
+                <motion.div 
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300"
+                  whileHover={{ scale: 1.05, x: 5 }}
+                >
+                  <motion.div 
+                    className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--electric-green)/0.2)] to-[hsl(var(--electric-green)/0.05)] border border-[hsl(var(--electric-green)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--electric-green)/0.3)] transition-all duration-300"
+                    whileHover={{ rotate: [0, -10, 10, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
                     <ShieldCheck className="h-5 w-5 text-[hsl(var(--electric-green))]" />
-                  </div>
+                  </motion.div>
                   <div>
                     <div className="text-sm font-semibold">24/7 SOC</div>
                     <div className="text-xs text-muted-foreground">Always Protected</div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300">
-                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] to-[hsl(var(--neon-cyan)/0.05)] border border-[hsl(var(--neon-cyan)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--neon-cyan)/0.3)] transition-all duration-300">
+                </motion.div>
+                <motion.div 
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300"
+                  whileHover={{ scale: 1.05, x: 5 }}
+                >
+                  <motion.div 
+                    className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] to-[hsl(var(--neon-cyan)/0.05)] border border-[hsl(var(--neon-cyan)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--neon-cyan)/0.3)] transition-all duration-300"
+                    whileHover={{ rotate: [0, 10, -10, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
                     <Network className="h-5 w-5 text-[hsl(var(--neon-cyan))]" />
-                  </div>
+                  </motion.div>
                   <div>
                     <div className="text-sm font-semibold">Zero Trust</div>
                     <div className="text-xs text-muted-foreground">Never Trust, Always Verify</div>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             </div>
             
@@ -510,35 +605,84 @@ const WhyCyvance = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <div className="relative w-64 h-64">
+              {/* Animated glow rings */}
+              {[...Array(3)].map((_, i) => (
                 <motion.div
-                  className="absolute inset-0 flex items-center justify-center"
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 5, 0, -5, 0]
+                  key={i}
+                  className="absolute inset-0 rounded-full border-2"
+                  style={{
+                    borderColor: i % 2 === 0 ? 'hsl(var(--neon-blue)/0.3)' : 'hsl(var(--cyber-purple)/0.3)',
                   }}
-                  transition={{ 
-                    duration: 6, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
+                  animate={{
+                    scale: [1, 1.5, 1],
+                    opacity: [0.5, 0, 0.5],
+                    rotate: [0, 180, 360],
                   }}
-                >
-                  <Shield className="w-32 h-32 text-[hsl(var(--neon-blue))]" />
-                </motion.div>
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center"
-                  animate={{ 
-                    scale: [1.1, 1, 1.1],
-                    rotate: [0, -5, 0, 5, 0]
-                  }}
-                  transition={{ 
-                    duration: 6, 
-                    repeat: Infinity, 
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    delay: i * 1.3,
                     ease: "easeInOut",
-                    delay: 3 
                   }}
-                >
-                  <Lock className="w-16 h-16 text-[hsl(var(--cyber-purple))]" />
-                </motion.div>
+                />
+              ))}
+              
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, 0, -5, 0],
+                  rotateY: [0, 15, 0, -15, 0],
+                }}
+                transition={{ 
+                  duration: 6, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+              >
+                <Shield className="w-32 h-32 text-[hsl(var(--neon-blue))] drop-shadow-[0_0_20px_hsl(var(--neon-blue))]" />
+              </motion.div>
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                animate={{ 
+                  scale: [1.1, 1, 1.1],
+                  rotate: [0, -5, 0, 5, 0],
+                  rotateX: [0, -15, 0, 15, 0],
+                }}
+                transition={{ 
+                  duration: 6, 
+                  repeat: Infinity, 
+                  ease: "easeInOut",
+                  delay: 3 
+                }}
+              >
+                <Lock className="w-16 h-16 text-[hsl(var(--cyber-purple))] drop-shadow-[0_0_15px_hsl(var(--cyber-purple))]" />
+              </motion.div>
+
+              {/* Particle burst effect */}
+              {[...Array(12)].map((_, i) => (
+                <motion.div
+                  key={`particle-${i}`}
+                  className="absolute w-1 h-1 rounded-full"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    background: i % 2 === 0 ? 'hsl(var(--neon-blue))' : 'hsl(var(--electric-green))',
+                  }}
+                  animate={{
+                    x: [0, Math.cos((i * 30 * Math.PI) / 180) * 100],
+                    y: [0, Math.sin((i * 30 * Math.PI) / 180) * 100],
+                    opacity: [0, 1, 0],
+                    scale: [0, 1.5, 0],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.1,
+                    ease: "easeOut",
+                  }}
+                />
+              ))}
               </div>
             </motion.div>
           </div>
@@ -573,43 +717,105 @@ const WhyCyvance = () => {
               return (
                 <motion.article
                   key={index}
-                  className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={differentiatorInView ? { opacity: 1, y: 0 } : {}}
+                  className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group relative overflow-hidden"
+                  initial={{ opacity: 0, y: 80, rotateX: -15 }}
+                  animate={differentiatorInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
                   transition={{ delay: index * 0.2, duration: 0.8 }}
                   whileHover={{ 
-                    rotateY: 5,
-                    rotateX: 5
+                    y: -15,
+                    scale: 1.05,
+                    rotateY: 8,
+                    rotateX: 8,
+                    boxShadow: "0 0 60px hsl(var(--neon-blue)/0.5), 0 20px 40px rgba(0,0,0,0.3)",
                   }}
-                  style={{ perspective: 1000 }}
+                  style={{ perspective: 1000, transformStyle: 'preserve-3d' }}
                 >
-                  <div className="scan-line mb-6">
-                    <div className={`h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--neon-blue)/0.05)] border border-[hsl(var(--neon-blue)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--neon-blue)/0.4)] transition-all duration-300`}>
+                  {/* Animated background gradient */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, hsl(var(--neon-blue)/0.1), transparent 50%)`,
+                    }}
+                  />
+                  
+                  {/* Scan line effect */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-b from-transparent via-[hsl(var(--neon-blue)/0.1)] to-transparent h-32 opacity-0 group-hover:opacity-100"
+                    animate={{
+                      y: ['-100%', '200%'],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                  <motion.div 
+                    className="scan-line mb-6 relative z-10"
+                    whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <motion.div 
+                      className={`h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--neon-blue)/0.05)] border border-[hsl(var(--neon-blue)/0.3)] group-hover:shadow-[0_0_35px_hsl(var(--neon-blue)/0.6)] transition-all duration-300 relative`}
+                      animate={{
+                        boxShadow: [
+                          '0 0 20px hsl(var(--neon-blue)/0.3)',
+                          '0 0 40px hsl(var(--neon-blue)/0.5)',
+                          '0 0 20px hsl(var(--neon-blue)/0.3)',
+                        ],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
                       <IconComponent className="h-8 w-8 text-[hsl(var(--neon-blue))]" />
-                    </div>
-                  </div>
+                      {/* Rotating ring */}
+                      <motion.div
+                        className="absolute inset-0 rounded-xl border-2 border-[hsl(var(--neon-blue)/0.5)]"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                      />
+                    </motion.div>
+                  </motion.div>
                   
-                  <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300">
+                  <motion.h3 
+                    className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300 relative z-10"
+                    whileHover={{ x: 5 }}
+                  >
                     {item.title}
-                  </h3>
+                  </motion.h3>
                   
-                  <p className="text-muted-foreground leading-relaxed mb-6">
+                  <motion.p 
+                    className="text-muted-foreground leading-relaxed mb-6 relative z-10"
+                    initial={{ opacity: 0.8 }}
+                    whileHover={{ opacity: 1 }}
+                  >
                     {item.description}
-                  </p>
+                  </motion.p>
                   
-                  <ul className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-3 hover:text-foreground transition-colors">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
-                      Advanced threat detection
-                    </li>
-                    <li className="flex items-center gap-3 hover:text-foreground transition-colors">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
-                      Real-time response automation
-                    </li>
-                    <li className="flex items-center gap-3 hover:text-foreground transition-colors">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
-                      Enterprise-grade security
-                    </li>
+                  <ul className="space-y-3 text-sm text-muted-foreground relative z-10">
+                    {['Advanced threat detection', 'Real-time response automation', 'Enterprise-grade security'].map((text, i) => (
+                      <motion.li 
+                        key={i}
+                        className="flex items-center gap-3 hover:text-foreground transition-colors"
+                        initial={{ x: -10, opacity: 0 }}
+                        animate={differentiatorInView ? { x: 0, opacity: 1 } : {}}
+                        transition={{ delay: index * 0.2 + i * 0.1 }}
+                        whileHover={{ x: 5 }}
+                      >
+                        <motion.span 
+                          className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]"
+                          animate={{
+                            scale: [1, 1.5, 1],
+                            boxShadow: [
+                              '0 0 0px hsl(var(--neon-blue))',
+                              '0 0 10px hsl(var(--neon-blue))',
+                              '0 0 0px hsl(var(--neon-blue))',
+                            ],
+                          }}
+                          transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                        />
+                        {text}
+                      </motion.li>
+                    ))}
                   </ul>
                 </motion.article>
               );
@@ -654,24 +860,61 @@ const WhyCyvance = () => {
                 <motion.div
                   key={index}
                   className="relative text-center group cursor-pointer"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={processInView ? { opacity: 1, y: 0 } : {}}
+                  initial={{ opacity: 0, y: 80, rotateY: -30 }}
+                  animate={processInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
                   transition={{ delay: index * 0.3, duration: 0.8 }}
                   onHoverStart={() => setCurrentStep(index)}
-                  whileHover={{ scale: 1.05, y: -10 }}
+                  whileHover={{ 
+                    scale: 1.08, 
+                    y: -15,
+                    rotateY: index % 2 === 0 ? 5 : -5,
+                    rotateX: 5,
+                  }}
+                  style={{ perspective: 1000 }}
                 >
-                  {/* Enhanced Step Circle */}
+                  {/* Enhanced Step Circle with orbiting elements */}
                   <motion.div
-                    className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] p-1 group-hover:scale-110 transition-transform duration-300 relative z-10"
+                    className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] p-1 relative z-10"
                     whileHover={{ 
-                      boxShadow: "0 0 40px hsl(var(--neon-blue)/0.6), 0 0 80px hsl(var(--cyber-purple)/0.3)" 
+                      scale: 1.15,
+                      boxShadow: "0 0 50px hsl(var(--neon-blue)/0.8), 0 0 100px hsl(var(--cyber-purple)/0.4)",
+                      rotate: [0, 5, -5, 0],
                     }}
+                    transition={{ duration: 0.5 }}
                   >
-                    <div className="flex items-center justify-center w-full h-full bg-background rounded-full">
-                      <span className="text-2xl font-bold bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
+                    <div className="flex items-center justify-center w-full h-full bg-background rounded-full relative overflow-hidden">
+                      {/* Rotating gradient overlay */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue)/0.2)] to-transparent rounded-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                      />
+                      <span className="text-2xl font-bold bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent relative z-10">
                         {step.step}
                       </span>
                     </div>
+                    
+                    {/* Orbiting dots */}
+                    {[...Array(4)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-2 h-2 rounded-full bg-[hsl(var(--electric-green))]"
+                        style={{
+                          boxShadow: '0 0 8px hsl(var(--electric-green))',
+                        }}
+                        animate={{
+                          rotate: [i * 90, i * 90 + 360],
+                          x: [Math.cos((i * 90 * Math.PI) / 180) * 50, Math.cos(((i * 90 + 360) * Math.PI) / 180) * 50],
+                          y: [Math.sin((i * 90 * Math.PI) / 180) * 50, Math.sin(((i * 90 + 360) * Math.PI) / 180) * 50],
+                        }}
+                        transition={{
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "linear",
+                          delay: i * 0.25,
+                        }}
+                      />
+                    ))}
                   </motion.div>
 
                   <h3 className="text-2xl font-display mb-3 group-hover:text-glow transition-all duration-300">
@@ -750,20 +993,70 @@ const WhyCyvance = () => {
             animate={proofInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={index} 
-                className="glow-card text-center p-8 rounded-2xl group hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.3)] transition-all duration-500"
-                whileHover={{ scale: 1.05, y: -5 }}
-              >
-                <div className="scan-line mb-4">
-                  <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent mb-2">
-                    <AnimatedCounter value={stat.number === "50+" ? 50 : stat.number === "99%" ? 99 : 24} />{stat.number.includes("+") ? "+" : stat.number.includes("%") ? "%" : stat.number.includes("/") ? "/7" : ""}
-                  </div>
-                </div>
-                <div className="text-muted-foreground text-lg font-semibold">
-                  {stat.label}
-                </div>
+              {stats.map((stat, index) => (
+                <motion.div 
+                  key={index} 
+                  className="glow-card text-center p-8 rounded-2xl group hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 relative overflow-hidden"
+                  initial={{ opacity: 0, scale: 0.8, rotateX: -20 }}
+                  animate={proofInView ? { opacity: 1, scale: 1, rotateX: 0 } : {}}
+                  transition={{ delay: index * 0.15, duration: 0.6 }}
+                  whileHover={{ 
+                    scale: 1.1, 
+                    y: -10,
+                    rotateY: 10,
+                    boxShadow: "0 0 60px hsl(var(--neon-blue)/0.5)",
+                  }}
+                  style={{ perspective: 1000 }}
+                >
+                  {/* Animated corner accents */}
+                  {[...Array(4)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-4 h-4 border-[hsl(var(--neon-blue))]"
+                      style={{
+                        top: i < 2 ? 0 : 'auto',
+                        bottom: i >= 2 ? 0 : 'auto',
+                        left: i % 2 === 0 ? 0 : 'auto',
+                        right: i % 2 === 1 ? 0 : 'auto',
+                        borderTopWidth: i < 2 ? 2 : 0,
+                        borderBottomWidth: i >= 2 ? 2 : 0,
+                        borderLeftWidth: i % 2 === 0 ? 2 : 0,
+                        borderRightWidth: i % 2 === 1 ? 2 : 0,
+                      }}
+                      animate={{
+                        opacity: [0.3, 1, 0.3],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: i * 0.2,
+                      }}
+                    />
+                  ))}
+                  <motion.div 
+                    className="scan-line mb-4 relative z-10"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <motion.div 
+                      className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent mb-2"
+                      animate={{
+                        textShadow: [
+                          '0 0 20px hsl(var(--neon-blue)/0.5)',
+                          '0 0 40px hsl(var(--cyber-purple)/0.5)',
+                          '0 0 20px hsl(var(--neon-blue)/0.5)',
+                        ],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <AnimatedCounter value={stat.number === "50+" ? 50 : stat.number === "99%" ? 99 : 24} />{stat.number.includes("+") ? "+" : stat.number.includes("%") ? "%" : stat.number.includes("/") ? "/7" : ""}
+                    </motion.div>
+                  </motion.div>
+                  <motion.div 
+                    className="text-muted-foreground text-lg font-semibold relative z-10"
+                    whileHover={{ color: 'hsl(var(--foreground))' }}
+                  >
+                    {stat.label}
+                  </motion.div>
               </motion.div>
             ))}
           </motion.div>
