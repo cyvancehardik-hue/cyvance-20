@@ -1,959 +1,826 @@
-import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { Shield, Zap, Brain, Globe, Lock, Eye, Target, TrendingUp, Award, Users, ArrowRight, ChevronDown, Sparkles } from "lucide-react";
+import { Search, Zap, Rocket, ChevronDown, Shield, Lock, Eye, Menu, X, Scan, ArrowRight, ShieldCheck, Network, AlertTriangle, Cloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { StickyHeader } from "@/components/StickyHeader";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
-// Cursor Glow Component
-const CursorGlow = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
-  useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    
-    window.addEventListener("mousemove", updateMousePosition);
-    return () => window.removeEventListener("mousemove", updateMousePosition);
-  }, []);
-  
-  return (
-    <motion.div
-      className="pointer-events-none fixed w-96 h-96 rounded-full opacity-30 blur-3xl"
-      style={{
-        background: "radial-gradient(circle, hsl(var(--neon-cyan)) 0%, transparent 70%)",
-        left: mousePosition.x - 192,
-        top: mousePosition.y - 192,
-      }}
-      animate={{
-        scale: [1, 1.2, 1],
-      }}
-      transition={{
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    />
-  );
-};
+const differentiators = [
+  {
+    icon: Search,
+    title: "Clarity, Not Complexity",
+    description: "We cut through jargon, give you clarity, not confusion.",
+    gradient: "from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))]"
+  },
+  {
+    icon: Zap,
+    title: "Speed Meets Precision",
+    description: "Instant response, zero wasted motion.",
+    gradient: "from-[hsl(var(--cyber-purple))] to-[hsl(var(--neon-blue))]"
+  },
+  {
+    icon: Rocket,
+    title: "Built for the Future",
+    description: "Cloud-native, AI-powered, always ahead of threats.",
+    gradient: "from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))]"
+  }
+];
 
-// Holographic Shield Component
-const HolographicShield = () => {
-  return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      {/* Outer rotating ring */}
-      <motion.div
-        className="absolute w-64 h-64 rounded-full border-2 border-[hsl(var(--neon-cyan)/0.3)]"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      >
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-[hsl(var(--neon-cyan))] rounded-full"
-            style={{
-              left: "50%",
-              top: "50%",
-              transform: `rotate(${i * 45}deg) translateY(-128px)`,
-            }}
-            animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.5, 1, 0.5],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.25,
-            }}
-          />
-        ))}
-      </motion.div>
-      
-      {/* Middle rotating ring */}
-      <motion.div
-        className="absolute w-48 h-48 rounded-full border border-[hsl(var(--electric-green)/0.4)]"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-      />
-      
-      {/* Inner shield */}
-      <motion.div
-        className="relative z-10"
-        animate={{
-          rotateY: [0, 360],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          rotateY: { duration: 8, repeat: Infinity, ease: "linear" },
-          scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-        }}
-        style={{ transformStyle: "preserve-3d" }}
-      >
-        <Shield className="w-32 h-32 text-[hsl(var(--neon-cyan))]" strokeWidth={1.5} />
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.3)] to-[hsl(var(--electric-green)/0.3)] blur-2xl"
-          animate={{
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </motion.div>
-      
-      {/* Particle trails */}
-      {[...Array(12)].map((_, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          className="absolute w-1 h-1 bg-[hsl(var(--electric-green))] rounded-full"
-          style={{
-            left: "50%",
-            top: "50%",
-          }}
-          animate={{
-            x: [0, Math.cos(i * 30 * Math.PI / 180) * 100],
-            y: [0, Math.sin(i * 30 * Math.PI / 180) * 100],
-            opacity: [1, 0],
-            scale: [1, 0],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            delay: i * 0.15,
-            ease: "easeOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
+const processSteps = [
+  {
+    step: "01",
+    title: "Assess",
+    description: "Deep risk discovery",
+    details: "Comprehensive analysis of your current security posture and threat landscape"
+  },
+  {
+    step: "02", 
+    title: "Defend",
+    description: "Real defenses, no silver bullets",
+    details: "Implementation of robust, multi-layered security measures tailored to your needs"
+  },
+  {
+    step: "03",
+    title: "Evolve", 
+    description: "Continuous updates against new threats",
+    details: "Adaptive security that evolves with the changing threat landscape"
+  }
+];
 
-// Cyber Rain Effect
-const CyberRain = () => {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-px bg-gradient-to-b from-transparent via-[hsl(var(--neon-cyan)/0.5)] to-transparent"
-          style={{
-            left: `${i * 5}%`,
-            height: "100px",
-          }}
-          animate={{
-            y: ["-100px", "100vh"],
-          }}
-          transition={{
-            duration: 2 + Math.random() * 3,
-            repeat: Infinity,
-            delay: Math.random() * 2,
-            ease: "linear",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-// Layered Defense Visualization
-const DefenseLayers = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  
-  const layers = [
-    { icon: Brain, label: "AI Threat Detection", color: "var(--neon-cyan)" },
-    { icon: Shield, label: "Network Shield", color: "var(--electric-green)" },
-    { icon: Eye, label: "Risk Intelligence", color: "var(--cyber-purple)" },
-    { icon: Lock, label: "Data Encryption", color: "var(--neon-blue)" },
-  ];
-  
-  return (
-    <div ref={ref} className="relative h-96 flex items-center justify-center">
-      {layers.map((layer, index) => {
-        const Icon = layer.icon;
-        const zIndex = layers.length - index;
-        
-        return (
-          <motion.div
-            key={index}
-            className="absolute"
-            initial={{ 
-              z: -index * 100, 
-              opacity: 0, 
-              scale: 0.5,
-              rotateX: -90 
-            }}
-            animate={isInView ? { 
-              z: index * 50, 
-              opacity: 1, 
-              scale: 1,
-              rotateX: 0,
-            } : {}}
-            transition={{ 
-              delay: index * 0.3, 
-              duration: 1,
-              ease: [0.23, 1, 0.32, 1],
-            }}
-            style={{ 
-              transformStyle: "preserve-3d",
-              zIndex,
-            }}
-          >
-            <motion.div
-              className="relative w-64 h-64 rounded-2xl border border-[hsl(var(--border))] bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-xl p-6 flex flex-col items-center justify-center"
-              whileHover={{ 
-                scale: 1.05,
-                rotateY: 10,
-                rotateX: 10,
-              }}
-              style={{
-                boxShadow: `0 0 40px hsl(${layer.color}/0.3), inset 0 0 20px hsl(${layer.color}/0.1)`,
-              }}
-            >
-              <motion.div
-                className="absolute inset-0 rounded-2xl"
-                style={{
-                  background: `linear-gradient(135deg, hsl(${layer.color}/0.1) 0%, transparent 100%)`,
-                }}
-                animate={{
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: index * 0.5,
-                }}
-              />
-              
-              <motion.div
-                animate={{
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: index * 0.2,
-                }}
-              >
-                <Icon 
-                  className="w-16 h-16 mb-4" 
-                  style={{ color: `hsl(${layer.color})` }}
-                  strokeWidth={1.5}
-                />
-              </motion.div>
-              
-              <h3 className="text-lg font-bold text-center">{layer.label}</h3>
-              
-              {/* Connecting lines */}
-              {index < layers.length - 1 && (
-                <motion.div
-                  className="absolute bottom-0 left-1/2 w-px h-12 bg-gradient-to-b from-[hsl(var(--neon-cyan))] to-transparent"
-                  initial={{ opacity: 0, scaleY: 0 }}
-                  animate={isInView ? { opacity: 1, scaleY: 1 } : {}}
-                  transition={{ delay: (index + 1) * 0.3, duration: 0.5 }}
-                  style={{ transformOrigin: "top" }}
-                />
-              )}
-            </motion.div>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-};
-
-// Morphing Card Component
-const MorphingCard = ({ icon: Icon, title, description, index }: any) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const [isHovered, setIsHovered] = useState(false);
-  
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]));
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]));
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    x.set((e.clientX - centerX) / (rect.width / 2));
-    y.set((e.clientY - centerY) / (rect.height / 2));
-  };
-  
-  return (
-    <motion.div
-      ref={ref}
-      className="relative group"
-      initial={{ 
-        opacity: 0,
-        scale: 0,
-        rotateX: -90,
-      }}
-      animate={isInView ? { 
-        opacity: 1,
-        scale: 1,
-        rotateX: 0,
-      } : {}}
-      transition={{ 
-        delay: index * 0.2, 
-        duration: 1,
-        type: "spring",
-        bounce: 0.4,
-      }}
-      style={{
-        transformStyle: "preserve-3d",
-        rotateX,
-        rotateY,
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        x.set(0);
-        y.set(0);
-      }}
-    >
-      <motion.div
-        className="relative p-8 rounded-2xl border border-[hsl(var(--border))] bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-xl overflow-hidden"
-        whileHover={{ 
-          boxShadow: "0 0 50px hsl(var(--neon-cyan)/0.4), inset 0 0 30px hsl(var(--neon-cyan)/0.1)",
-        }}
-      >
-        {/* Glitch effect on hover */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] to-transparent"
-          animate={isHovered ? {
-            x: [0, 2, -2, 0],
-            opacity: [0, 0.5, 0],
-          } : {}}
-          transition={{
-            duration: 0.3,
-            repeat: isHovered ? Infinity : 0,
-            repeatDelay: 1,
-          }}
-        />
-        
-        {/* Icon with pulse */}
-        <motion.div
-          className="relative w-16 h-16 rounded-xl mb-6 flex items-center justify-center"
-          style={{
-            background: "linear-gradient(135deg, hsl(var(--neon-cyan)/0.2) 0%, hsl(var(--electric-green)/0.1) 100%)",
-            boxShadow: "0 0 20px hsl(var(--neon-cyan)/0.3)",
-          }}
-          animate={{
-            boxShadow: [
-              "0 0 20px hsl(var(--neon-cyan)/0.3)",
-              "0 0 40px hsl(var(--neon-cyan)/0.6)",
-              "0 0 20px hsl(var(--neon-cyan)/0.3)",
-            ],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-          }}
-        >
-          <Icon className="w-8 h-8 text-[hsl(var(--neon-cyan))]" />
-        </motion.div>
-        
-        <h3 className="text-xl font-bold mb-3">{title}</h3>
-        <p className="text-muted-foreground leading-relaxed">{description}</p>
-      </motion.div>
-    </motion.div>
-  );
-};
-
-// Data Matrix Stats
-const DataMatrix = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  
-  const stats = [
-    { value: 100, suffix: "%", label: "Zero Breach Record", icon: Shield },
-    { value: 99.9, suffix: "%", label: "Threat Detection", icon: Target },
-    { value: 24, suffix: "/7", label: "Active Monitoring", icon: Eye },
-  ];
-  
-  return (
-    <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {stats.map((stat, index) => {
-        const Icon = stat.icon;
-        
-        return (
-          <motion.div
-            key={index}
-            className="relative p-8 rounded-2xl border border-[hsl(var(--border))] bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-xl overflow-hidden group"
-            initial={{ opacity: 0, y: 50, rotateX: -45 }}
-            animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-            transition={{ delay: index * 0.2, duration: 0.8 }}
-            whileHover={{ scale: 1.05, y: -10 }}
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            {/* Scan line effect */}
-            <motion.div
-              className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-[hsl(var(--neon-cyan))] to-transparent"
-              animate={{
-                top: ["-100%", "200%"],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: index * 0.5,
-                ease: "linear",
-              }}
-            />
-            
-            {/* Spark effects */}
-            <motion.div
-              className="absolute top-4 right-4 w-2 h-2 bg-[hsl(var(--electric-green))] rounded-full"
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1.5, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: index * 0.3,
-              }}
-            />
-            
-            <Icon className="w-12 h-12 text-[hsl(var(--neon-cyan))] mb-6" />
-            
-            <div className="text-5xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--electric-green))] bg-clip-text text-transparent">
-                {isInView && <AnimatedCounter value={stat.value} duration={2000} />}
-                {stat.suffix}
-              </span>
-            </div>
-            
-            <p className="text-muted-foreground font-semibold">{stat.label}</p>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-};
-
-// Company Logo with Teleport Effect
-const TeleportLogo = ({ name, index }: { name: string; index: number }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  
-  return (
-    <motion.div
-      ref={ref}
-      className="relative p-6 rounded-xl border border-[hsl(var(--border))] bg-gradient-to-br from-background/60 to-background/20 backdrop-blur-sm"
-      initial={{ 
-        opacity: 0,
-        scale: 0,
-        filter: "blur(20px)",
-      }}
-      animate={isInView ? { 
-        opacity: 1,
-        scale: 1,
-        filter: "blur(0px)",
-      } : {}}
-      transition={{ 
-        delay: index * 0.1,
-        duration: 0.8,
-        ease: [0.23, 1, 0.32, 1],
-      }}
-      whileHover={{ 
-        scale: 1.1,
-        boxShadow: "0 0 30px hsl(var(--neon-cyan)/0.4)",
-      }}
-    >
-      {/* Holographic shine */}
-      <motion.div
-        className="absolute inset-0 rounded-xl bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] via-transparent to-[hsl(var(--electric-green)/0.2)]"
-        animate={{
-          opacity: [0, 0.5, 0],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          delay: index * 0.2,
-        }}
-      />
-      
-      <div className="relative text-center font-mono font-bold text-lg">
-        {name}
-      </div>
-    </motion.div>
-  );
-};
-
-// Global Network Map
-const GlobalNetwork = () => {
-  return (
-    <div className="absolute inset-0 opacity-20 overflow-hidden pointer-events-none">
-      <svg className="w-full h-full" viewBox="0 0 1000 500">
-        {/* Connection lines */}
-        {[...Array(15)].map((_, i) => {
-          const x1 = Math.random() * 1000;
-          const y1 = Math.random() * 500;
-          const x2 = Math.random() * 1000;
-          const y2 = Math.random() * 500;
-          
-          return (
-            <motion.line
-              key={i}
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke="hsl(var(--neon-cyan))"
-              strokeWidth="1"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ 
-                pathLength: [0, 1, 0],
-                opacity: [0, 0.5, 0],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                delay: i * 0.3,
-                ease: "easeInOut",
-              }}
-            />
-          );
-        })}
-        
-        {/* Nodes */}
-        {[...Array(20)].map((_, i) => {
-          const cx = Math.random() * 1000;
-          const cy = Math.random() * 500;
-          
-          return (
-            <motion.circle
-              key={`node-${i}`}
-              cx={cx}
-              cy={cy}
-              r="3"
-              fill="hsl(var(--electric-green))"
-              animate={{
-                opacity: [0.3, 1, 0.3],
-                r: [3, 5, 3],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: i * 0.1,
-              }}
-            />
-          );
-        })}
-      </svg>
-    </div>
-  );
-};
+const stats = [
+  { number: "50+", label: "Businesses Secured" },
+  { number: "99%", label: "Response SLA" },
+  { number: "24/7", label: "Coverage" }
+];
 
 const WhyCyvance = () => {
   const navigate = useNavigate();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
+  const [typewriterText, setTypewriterText] = useState("");
+  const [showSubheadline, setShowSubheadline] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
-  const [displayText, setDisplayText] = useState("");
-  const fullText = "We Reinvent Cyber Defense with Precision, Power, and Intelligence.";
+  const heroRef = useRef<HTMLDivElement>(null);
+  const visionRef = useRef<HTMLDivElement>(null);
+  const differentiatorRef = useRef<HTMLDivElement>(null);
+  const processRef = useRef<HTMLDivElement>(null);
+  const proofRef = useRef<HTMLDivElement>(null);
   
-  const heroRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true });
-  
-  // Letter-by-letter animation
+  const visionInView = useInView(visionRef, { once: true, margin: "-100px" });
+  const differentiatorInView = useInView(differentiatorRef, { once: true, margin: "-100px" });
+  const processInView = useInView(processRef, { once: true, margin: "-100px" });
+  const proofInView = useInView(proofRef, { once: true, margin: "-100px" });
+
+  // Mouse tracking for interactive background
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Typewriter effect
   useEffect(() => {
     if (heroInView) {
+      const text = "Because security shouldn't be complicated — it should be trusted.";
       let i = 0;
-      const interval = setInterval(() => {
-        if (i <= fullText.length) {
-          setDisplayText(fullText.slice(0, i));
+      const typewriter = setInterval(() => {
+        if (i < text.length) {
+          setTypewriterText(text.slice(0, i + 1));
           i++;
         } else {
-          clearInterval(interval);
+          clearInterval(typewriter);
+          setTimeout(() => setShowSubheadline(true), 500);
         }
       }, 50);
-      
-      return () => clearInterval(interval);
+      return () => clearInterval(typewriter);
     }
   }, [heroInView]);
-  
-  const coreEdges = [
-    {
-      icon: Brain,
-      title: "AI-Powered Defense",
-      description: "Machine learning algorithms that predict and neutralize threats before they materialize.",
-    },
-    {
-      icon: Zap,
-      title: "Real-Time Response",
-      description: "Automated incident response within milliseconds, not hours.",
-    },
-    {
-      icon: Globe,
-      title: "Global Intelligence",
-      description: "Threat data from across the planet, processed in real-time.",
-    },
-  ];
-  
-  const companies = ["TechCorp", "SecureNet", "DataShield", "CyberFlow", "DefenseHub", "InfoGuard"];
-  
+
   return (
-    <div ref={containerRef} className="min-h-screen bg-[#0D1117]">
+    <div className="min-h-screen bg-background">
+      {/* Use the same header as main page */}
       <StickyHeader />
-      <CursorGlow />
-      
-      {/* 1️⃣ HERO SECTION */}
-      <section 
-        ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
-      >
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0D1117] via-[#0D1117]/95 to-[#0D1117]" />
+
+      {/* Hero Section */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden cyber-grid pt-16">
+        {/* Enhanced Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
         
-        <CyberRain />
-        
-        {/* Holographic Shield */}
-        <div className="absolute right-[10%] top-1/2 -translate-y-1/2 w-96 h-96 hidden lg:block">
-          <HolographicShield />
-        </div>
-        
-        {/* Content */}
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl">
-            <motion.div
-              className="mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8 }}
-            >
-              <motion.h1 
-                className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
-                style={{
-                  background: "linear-gradient(135deg, #00E0FF 0%, #8B5CF6 50%, #00FF88 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundSize: "200% 200%",
-                }}
-                animate={{
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-              >
-                Defend Beyond Limits
-              </motion.h1>
-            </motion.div>
-            
-            <motion.div
-              className="mb-12"
-              initial={{ opacity: 0 }}
-              animate={heroInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              <p className="text-2xl md:text-3xl text-white/90 font-light leading-relaxed">
-                {displayText}
-                <motion.span
-                  className="inline-block w-1 h-8 bg-[#00E0FF] ml-1"
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                />
-              </p>
-            </motion.div>
-            
-            <motion.div
-              className="flex flex-wrap gap-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.6, duration: 0.8 }}
-            >
-              <Button
-                size="lg"
-                className="px-8 py-6 text-lg font-semibold bg-gradient-to-r from-[#00E0FF] to-[#8B5CF6] hover:scale-105 transition-all duration-300 group"
-                style={{
-                  boxShadow: "0 0 30px hsl(var(--neon-cyan)/0.5)",
-                }}
-                onClick={() => navigate("/#contact")}
-              >
-                <Sparkles className="mr-2 h-5 w-5" />
-                Explore Our Defense
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              
-              <Button
-                size="lg"
-                variant="outline"
-                className="px-8 py-6 text-lg font-semibold border-2 border-[#00E0FF] text-[#00E0FF] hover:bg-[#00E0FF]/10 hover:scale-105 transition-all duration-300"
-                onClick={() => navigate("/#contact")}
-              >
-                Schedule Demo
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-        
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <ChevronDown className="w-8 h-8 text-[#00E0FF]" />
-        </motion.div>
-      </section>
-      
-      {/* 2️⃣ LAYERED DEFENSE VISUALIZATION */}
-      <section className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0D1117] via-[#1a1f2e] to-[#0D1117]" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-[#00E0FF] to-[#00FF88] bg-clip-text text-transparent">
-                Multi-Layered Protection
-              </span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Each layer builds upon the last, creating an impenetrable fortress of digital security.
-            </p>
-          </motion.div>
-          
-          <DefenseLayers />
-        </div>
-      </section>
-      
-      {/* 3️⃣ CORE EDGE ADVANTAGES */}
-      <section className="relative py-32">
-        <div className="absolute inset-0 bg-[#0D1117]" />
-        
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(30)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-[#00E0FF] rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -50, 0],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-[#8B5CF6] to-[#00FF88] bg-clip-text text-transparent">
-                Our Core Edge
-              </span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Innovation meets execution. Technology meets trust.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {coreEdges.map((edge, index) => (
-              <MorphingCard key={index} {...edge} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* 4️⃣ THE PROOF MATRIX */}
-      <section className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0D1117] via-[#0a0e1a] to-[#0D1117]" />
-        
-        {/* Grid background */}
-        <div 
-          className="absolute inset-0 opacity-20"
+        {/* Interactive Background Grid */}
+        <motion.div 
+          className="absolute inset-0 opacity-40"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(0, 224, 255, 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 224, 255, 0.1) 1px, transparent 1px)
+              linear-gradient(rgba(var(--neon-blue-rgb)/0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(var(--neon-blue-rgb)/0.1) 1px, transparent 1px)
             `,
-            backgroundSize: "50px 50px",
-          }}
-        />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-[#00FF88] to-[#00E0FF] bg-clip-text text-transparent">
-                Proven Performance
-              </span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Numbers that speak louder than words.
-            </p>
-          </motion.div>
-          
-          <DataMatrix />
-        </div>
-      </section>
-      
-      {/* 5️⃣ TRUSTED BY GLOBAL FORCES */}
-      <section className="relative py-32">
-        <div className="absolute inset-0 bg-[#0D1117]" />
-        <GlobalNetwork />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-[#00E0FF] to-[#8B5CF6] bg-clip-text text-transparent">
-                Trusted Globally
-              </span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Protecting enterprises across continents.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {companies.map((company, index) => (
-              <TeleportLogo key={index} name={company} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* 6️⃣ IMMERSIVE CTA */}
-      <section className="relative py-32 overflow-hidden">
-        {/* Neon wave sweep */}
-        <motion.div
-          className="absolute inset-0"
-          initial={{ 
-            background: "radial-gradient(circle at 0% 50%, #00E0FF 0%, transparent 50%)" 
+            backgroundSize: '60px 60px',
+            transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`
           }}
           animate={{ 
-            background: [
-              "radial-gradient(circle at 0% 50%, #00E0FF 0%, transparent 50%)",
-              "radial-gradient(circle at 50% 50%, #8B5CF6 0%, transparent 50%)",
-              "radial-gradient(circle at 100% 50%, #00FF88 0%, transparent 50%)",
-            ]
+            backgroundPosition: ['0px 0px', '60px 60px'] 
           }}
           transition={{ 
-            duration: 10, 
-            repeat: Infinity,
-            ease: "linear",
+            duration: 20, 
+            repeat: Infinity, 
+            ease: "linear" 
           }}
         />
-        
-        <div className="absolute inset-0 bg-black/40" />
-        
-        {/* Infinite data flow */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(50)].map((_, i) => (
+
+        {/* Floating particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(5)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-px h-4 bg-[#00E0FF]"
+              className="absolute w-2 h-2 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full opacity-60"
               style={{
-                left: `${Math.random() * 100}%`,
+                left: `${20 + i * 15}%`,
+                top: `${30 + i * 10}%`,
               }}
               animate={{
-                y: ["0vh", "100vh"],
-                opacity: [0, 1, 0],
+                y: [-20, 20, -20],
+                x: [-10, 10, -10],
+                opacity: [0.3, 0.8, 0.3],
               }}
               transition={{
-                duration: 2 + Math.random(),
+                duration: 4 + i,
                 repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: "linear",
+                ease: "easeInOut",
+                delay: i * 0.5,
               }}
             />
           ))}
+        </div>
+
+        {/* Animated Cyvance Logo */}
+        <motion.div
+          className="absolute top-1/2 right-1/4 transform -translate-y-1/2 hidden lg:block"
+          initial={{ opacity: 0, scale: 0.5, rotateY: -90 }}
+          animate={heroInView ? { 
+            opacity: 1, 
+            scale: 1, 
+            rotateY: 0,
+          } : {}}
+          transition={{ delay: 0.5, duration: 1.5, ease: "easeOut" }}
+        >
+          <div className="relative">
+            {/* Pulsing glow effect */}
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full blur-3xl opacity-50"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.6, 0.3]
+              }}
+              transition={{ 
+                duration: 3, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+            />
+            {/* Logo representation */}
+            <div className="relative w-64 h-64 flex items-center justify-center">
+              <motion.div
+                className="w-32 h-32 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] transform rotate-45 rounded-2xl"
+                animate={{ 
+                  rotateZ: [45, 50, 45],
+                  scale: [1, 1.05, 1]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+              />
+              <motion.div
+                className="absolute w-20 h-20 bg-gradient-to-r from-[hsl(var(--cyber-purple))] to-[hsl(var(--neon-blue))] transform rotate-45 rounded-xl"
+                animate={{ 
+                  rotateZ: [45, 40, 45],
+                  scale: [1, 0.95, 1]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut",
+                  delay: 0.5
+                }}
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Main Content */}
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="order-2 lg:order-1 space-y-8">
+              {/* Status Badge */}
+              <motion.div 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] border border-[hsl(var(--neon-blue)/0.3)] text-sm font-mono uppercase tracking-wider"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={heroInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ delay: 0.2 }}
+              >
+                <span className="h-2 w-2 rounded-full bg-[hsl(var(--electric-green))] animate-pulse" />
+                Advanced Security Platform
+              </motion.div>
+
+              {/* Typewriter Headline */}
+              <div>
+                <h1 className="font-display text-5xl md:text-6xl lg:text-7xl leading-tight text-glow">
+                  {typewriterText}
+                  <motion.span
+                    animate={{ opacity: [1, 0] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                    className="text-[hsl(var(--neon-blue))]"
+                  >
+                    |
+                  </motion.span>
+                </h1>
+              </div>
+
+              {/* Animated Subheadline */}
+              <motion.p 
+                className="text-muted-foreground text-lg md:text-xl max-w-prose leading-relaxed"
+                initial={{ opacity: 0, y: 30 }}
+                animate={showSubheadline ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8 }}
+              >
+                Protecting your people, your data, and your future with military-grade cybersecurity that evolves with your threat landscape.
+              </motion.p>
+
+              {/* CTA Buttons */}
+              <motion.div
+                className="flex flex-wrap items-center gap-4"
+                initial={{ opacity: 0, y: 30 }}
+                animate={showSubheadline ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3, duration: 0.8 }}
+              >
+                <Button 
+                  variant="hero" 
+                  size="lg"
+                  className="group hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.4)] hover:scale-105 transition-all duration-300"
+                  onClick={() => navigate('/#contact')}
+                >
+                  <Scan className="mr-2 h-4 w-4" />
+                  Discover Why Cyvance
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+                <Button 
+                  variant="neon" 
+                  size="lg"
+                  className="hover:shadow-[0_0_30px_hsl(var(--neon-blue)/0.3)] hover:scale-105 transition-all duration-300"
+                  onClick={() => navigate('/#contact')}
+                >
+                  Talk to Us
+                </Button>
+              </motion.div>
+
+              {/* Feature Highlights */}
+              <motion.div 
+                className="grid grid-cols-2 gap-6 pt-6"
+                initial={{ opacity: 0, y: 30 }}
+                animate={showSubheadline ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.6, duration: 0.8 }}
+              >
+                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300">
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--electric-green)/0.2)] to-[hsl(var(--electric-green)/0.05)] border border-[hsl(var(--electric-green)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--electric-green)/0.3)] transition-all duration-300">
+                    <ShieldCheck className="h-5 w-5 text-[hsl(var(--electric-green))]" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold">24/7 SOC</div>
+                    <div className="text-xs text-muted-foreground">Always Protected</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300">
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] to-[hsl(var(--neon-cyan)/0.05)] border border-[hsl(var(--neon-cyan)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--neon-cyan)/0.3)] transition-all duration-300">
+                    <Network className="h-5 w-5 text-[hsl(var(--neon-cyan))]" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold">Zero Trust</div>
+                    <div className="text-xs text-muted-foreground">Never Trust, Always Verify</div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+            
+            {/* Right: Enhanced Logo Animation */}
+            <motion.div
+              className="order-1 lg:order-2 relative"
+              initial={{ opacity: 0, scale: 0.5, rotateY: -90 }}
+              animate={heroInView ? { 
+                opacity: 1, 
+                scale: 1, 
+                rotateY: 0,
+              } : {}}
+              transition={{ delay: 0.5, duration: 1.5, ease: "easeOut" }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] rounded-2xl blur-3xl animate-pulse" />
+              <div className="relative hover:scale-105 transition-transform duration-500">
+                <div className="relative w-full max-w-md mx-auto">
+                  {/* Pulsing glow effect */}
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full blur-3xl opacity-50"
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.3, 0.6, 0.3]
+                    }}
+                    transition={{ 
+                      duration: 3, 
+                      repeat: Infinity, 
+                      ease: "easeInOut" 
+                    }}
+                  />
+                  {/* Logo representation */}
+                  <div className="relative w-64 h-64 flex items-center justify-center mx-auto">
+                    <motion.div
+                      className="w-32 h-32 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] transform rotate-45 rounded-2xl"
+                      animate={{ 
+                        rotateZ: [45, 50, 45],
+                        scale: [1, 1.05, 1]
+                      }}
+                      transition={{ 
+                        duration: 4, 
+                        repeat: Infinity, 
+                        ease: "easeInOut" 
+                      }}
+                    />
+                    <motion.div
+                      className="absolute w-20 h-20 bg-gradient-to-r from-[hsl(var(--cyber-purple))] to-[hsl(var(--neon-blue))] transform rotate-45 rounded-xl"
+                      animate={{ 
+                        rotateZ: [45, 40, 45],
+                        scale: [1, 0.95, 1]
+                      }}
+                      transition={{ 
+                        duration: 4, 
+                        repeat: Infinity, 
+                        ease: "easeInOut",
+                        delay: 0.5
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+          
+          {/* Scroll Indicator */}
+          <motion.div
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+            initial={{ opacity: 0 }}
+            animate={showSubheadline ? { opacity: 1 } : {}}
+            transition={{ delay: 1 }}
+          >
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <ChevronDown className="w-6 h-6 text-muted-foreground" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Our Why Section - Enhanced with Parallax & Scroll Animations */}
+      <section ref={visionRef} className="py-20 md:py-32 relative overflow-hidden">
+        {/* Enhanced Background Effects with Parallax */}
+        <motion.div 
+          className="absolute inset-0 overflow-hidden"
+          style={{
+            y: visionInView ? 0 : 100,
+            opacity: visionInView ? 1 : 0,
+          }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-blue)/0.08)] via-transparent to-[hsl(var(--cyber-purple)/0.08)]"
+            animate={{ 
+              backgroundPosition: ['0% 0%', '100% 100%'],
+            }}
+            transition={{ 
+              duration: 20, 
+              repeat: Infinity, 
+              repeatType: "reverse",
+              ease: "linear"
+            }}
+          />
+          <motion.div 
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(0, 170, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 170, 255, 0.15) 1px, transparent 1px)
+              `,
+              backgroundSize: "80px 80px",
+            }}
+            animate={{
+              backgroundPosition: ['0px 0px', '80px 80px']
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          {/* Animated scan lines */}
+          <motion.div 
+            className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[hsl(var(--neon-cyan))] to-transparent"
+            initial={{ x: '-100%', opacity: 0 }}
+            animate={visionInView ? { 
+              x: '100%',
+              opacity: [0, 1, 1, 0]
+            } : {}}
+            transition={{ 
+              duration: 2.5,
+              repeat: Infinity,
+              repeatDelay: 3,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-0 right-0 w-full h-0.5 bg-gradient-to-l from-transparent via-[hsl(var(--electric-green))] to-transparent"
+            initial={{ x: '100%', opacity: 0 }}
+            animate={visionInView ? { 
+              x: '-100%',
+              opacity: [0, 1, 1, 0]
+            } : {}}
+            transition={{ 
+              duration: 2.5,
+              repeat: Infinity,
+              repeatDelay: 3,
+              delay: 1.25,
+              ease: "easeInOut"
+            }}
+          />
+        </motion.div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Story Copy with Staggered Animation */}
+            <motion.div
+              initial={{ opacity: 0, x: -80, scale: 0.95 }}
+              animate={visionInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+              transition={{ 
+                duration: 1, 
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={visionInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.2, duration: 0.8 }}
+              >
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] border border-[hsl(var(--neon-blue)/0.3)] text-xs font-mono uppercase tracking-wider mb-6">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--electric-green))] animate-pulse" />
+                  Our Mission
+                </div>
+              </motion.div>
+
+              <motion.h2 
+                className="font-display text-4xl md:text-5xl mb-6 text-glow"
+                initial={{ opacity: 0, y: 30 }}
+                animate={visionInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3, duration: 0.8 }}
+              >
+                Our Vision Story
+                <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
+                  The Future of Security
+                </span>
+              </motion.h2>
+              <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+                <p className="text-xl font-semibold text-foreground">
+                  Cybersecurity isn't just about firewalls and patches.
+                </p>
+                <p>
+                  It's about <strong className="text-[hsl(var(--neon-blue))]">trust</strong>, <strong className="text-[hsl(var(--cyber-purple))]">clarity</strong>, and <strong className="text-[hsl(var(--electric-green))]">resilience</strong>.
+                </p>
+                <p>
+                  Cyvance exists to turn uncertainty into confidence, complexity into clarity, and reactive measures into proactive protection that evolves with tomorrow's threats.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Right: Animated Shield/Lock */}
+            <motion.div
+              className="flex justify-center lg:justify-end"
+              initial={{ opacity: 0, x: 50 }}
+              animate={visionInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <div className="relative w-64 h-64">
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center"
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 5, 0, -5, 0]
+                  }}
+                  transition={{ 
+                    duration: 6, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <Shield className="w-32 h-32 text-[hsl(var(--neon-blue))]" />
+                </motion.div>
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center"
+                  animate={{ 
+                    scale: [1.1, 1, 1.1],
+                    rotate: [0, -5, 0, 5, 0]
+                  }}
+                  transition={{ 
+                    duration: 6, 
+                    repeat: Infinity, 
+                    ease: "easeInOut",
+                    delay: 3 
+                  }}
+                >
+                  <Lock className="w-16 h-16 text-[hsl(var(--cyber-purple))]" />
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Differentiators Grid */}
+      <section ref={differentiatorRef} className="py-20 md:py-32 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-background to-muted/20" />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 50 }}
+            animate={differentiatorInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="font-display text-3xl md:text-5xl mb-6">
+              Differentiators Grid
+              <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
+                Our Promise
+              </span>
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+              Military-grade solutions engineered for modern threats. AI-powered capabilities that define the future of cybersecurity.
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {differentiators.map((item, index) => {
+              const IconComponent = item.icon;
+              return (
+                <motion.article
+                  key={index}
+                  className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={differentiatorInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: index * 0.2, duration: 0.8 }}
+                  whileHover={{ 
+                    rotateY: 5,
+                    rotateX: 5
+                  }}
+                  style={{ perspective: 1000 }}
+                >
+                  <div className="scan-line mb-6">
+                    <div className={`h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--neon-blue)/0.05)] border border-[hsl(var(--neon-blue)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--neon-blue)/0.4)] transition-all duration-300`}>
+                      <IconComponent className="h-8 w-8 text-[hsl(var(--neon-blue))]" />
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300">
+                    {item.title}
+                  </h3>
+                  
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    {item.description}
+                  </p>
+                  
+                  <ul className="space-y-3 text-sm text-muted-foreground">
+                    <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
+                      Advanced threat detection
+                    </li>
+                    <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
+                      Real-time response automation
+                    </li>
+                    <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
+                      Enterprise-grade security
+                    </li>
+                  </ul>
+                </motion.article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Process Timeline */}
+      <section ref={processRef} className="py-20 md:py-32 relative">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 50 }}
+            animate={processInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="font-display text-3xl md:text-5xl mb-6">
+              The Cyvance Way
+              <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
+                Process & Flow
+              </span>
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+              Horizontal 3-step process with interactive hover states and glowing progress indicators.
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Enhanced Progress Line */}
+            <div className="absolute top-1/2 left-0 right-0 h-1 bg-border/30 rounded-full hidden md:block">
+              <motion.div
+                className="h-full bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full shadow-[0_0_20px_hsl(var(--neon-blue)/0.4)]"
+                initial={{ width: "0%" }}
+                animate={processInView ? { width: `${((currentStep + 1) / processSteps.length) * 100}%` } : {}}
+                transition={{ duration: 2, ease: "easeOut" }}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {processSteps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  className="relative text-center group cursor-pointer"
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={processInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: index * 0.3, duration: 0.8 }}
+                  onHoverStart={() => setCurrentStep(index)}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                >
+                  {/* Enhanced Step Circle */}
+                  <motion.div
+                    className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] p-1 group-hover:scale-110 transition-transform duration-300 relative z-10"
+                    whileHover={{ 
+                      boxShadow: "0 0 40px hsl(var(--neon-blue)/0.6), 0 0 80px hsl(var(--cyber-purple)/0.3)" 
+                    }}
+                  >
+                    <div className="flex items-center justify-center w-full h-full bg-background rounded-full">
+                      <span className="text-2xl font-bold bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
+                        {step.step}
+                      </span>
+                    </div>
+                  </motion.div>
+
+                  <h3 className="text-2xl font-display mb-3 group-hover:text-glow transition-all duration-300">
+                    {step.title}
+                  </h3>
+                  <p className="text-lg font-medium text-muted-foreground mb-4">
+                    {step.description}
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {step.details}
+                  </p>
+
+                  {/* Glow effect on hover */}
+                  <motion.div
+                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10"
+                    initial={{ scale: 0.8 }}
+                    whileHover={{ scale: 1.1 }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Proof of Trust Section */}
+      <section ref={proofRef} className="py-20 md:py-32 relative overflow-hidden">
+        {/* Floating client logos background */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-16 h-16 rounded-lg bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] border border-[hsl(var(--neon-blue)/0.2)] backdrop-blur-sm flex items-center justify-center text-sm font-mono opacity-60"
+              style={{
+                left: `${10 + i * 12}%`,
+                top: `${20 + (i % 3) * 20}%`,
+              }}
+              animate={{
+                y: [-10, 10, -10],
+                x: [-5, 5, -5],
+                opacity: [0.3, 0.7, 0.3],
+              }}
+              transition={{
+                duration: 5 + i,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 0.8,
+              }}
+            >
+              {i < 3 ? 'SEC' : i < 6 ? 'ENT' : 'TEC'}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 50 }}
+            animate={proofInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="font-display text-3xl md:text-4xl mb-6">
+              Proof of Trust
+              <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
+                Social Validation
+              </span>
+            </h2>
+            <p className="text-muted-foreground text-xl max-w-2xl mx-auto">
+              "Trusted by innovators, startups, and enterprises across industries."
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 50 }}
+            animate={proofInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            {stats.map((stat, index) => (
+              <motion.div 
+                key={index} 
+                className="glow-card text-center p-8 rounded-2xl group hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.3)] transition-all duration-500"
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <div className="scan-line mb-4">
+                  <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent mb-2">
+                    <AnimatedCounter value={stat.number === "50+" ? 50 : stat.number === "99%" ? 99 : 24} />{stat.number.includes("+") ? "+" : stat.number.includes("%") ? "%" : stat.number.includes("/") ? "/7" : ""}
+                  </div>
+                </div>
+                <div className="text-muted-foreground text-lg font-semibold">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Final Call to Action */}
+      <section className="py-20 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))]" />
+        <div className="absolute inset-0 bg-black/20" />
+        
+        {/* Animated grid background */}
+        <div className="absolute inset-0 opacity-20">
+          <div 
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: "50px 50px",
+              animation: "float 15s ease-in-out infinite",
+            }}
+          />
         </div>
         
         <div className="container mx-auto px-4 text-center relative z-10">
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={proofInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
           >
-            <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
-              Let's Reinforce
+            <h2 className="font-display text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
+              Ready for security that works 
               <br />
-              <span className="bg-gradient-to-r from-[#00E0FF] to-[#00FF88] bg-clip-text text-transparent">
-                Your Future
-              </span>
+              <span className="text-white/80">with you, not against you?</span>
             </h2>
             
-            <p className="text-2xl text-white/80 mb-12 max-w-2xl mx-auto">
-              Join the next generation of cyber defense.
-            </p>
-            
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Button 
                 size="lg"
-                className="px-12 py-8 text-xl font-bold bg-white text-[#0D1117] hover:bg-white/90 group relative overflow-hidden"
-                onClick={() => navigate("/#contact")}
-                style={{
-                  boxShadow: "0 0 60px rgba(255, 255, 255, 0.5)",
-                }}
+                className="px-8 py-4 text-lg font-semibold bg-white text-[hsl(var(--neon-blue))] hover:bg-white/90 hover:scale-105 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]"
+                onClick={() => navigate('/#contact')}
               >
-                {/* Energy pulse effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                  animate={{
-                    x: ["-200%", "200%"],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
-                
-                <span className="relative z-10 flex items-center">
-                  <Zap className="mr-2 h-6 w-6" />
-                  Activate Defense System
-                  <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
-                </span>
+                <Scan className="mr-2 h-5 w-5" />
+                Get Started with Cyvance
               </Button>
-            </motion.div>
+              <Button 
+                variant="outline"
+                size="lg" 
+                className="px-8 py-4 text-lg border-white text-white hover:bg-white hover:text-[hsl(var(--neon-blue))] hover:scale-105 transition-all duration-300"
+                onClick={() => navigate('/#services')}
+              >
+                Learn More About Our Approach
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
