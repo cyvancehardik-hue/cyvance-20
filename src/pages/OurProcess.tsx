@@ -465,7 +465,7 @@ const OurProcess = () => {
       
       <main className="pt-16">
         {/* Hero Section - Cinematic Intro */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-20">
           {/* Data Grid Background */}
           <DataGridBackground />
           
@@ -510,8 +510,8 @@ const OurProcess = () => {
             }}
           />
 
-          <div className="container mx-auto relative z-10 px-4">
-            <div className="text-center space-y-12">
+          <div className="container mx-auto relative z-10 px-4 flex-1 flex flex-col justify-center">
+            <div className="text-center space-y-12 mb-20">
               {/* Badge with Glitch */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -622,7 +622,7 @@ const OurProcess = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.4 }}
-            className="absolute bottom-12 left-0 right-0 z-10"
+            className="relative z-10 w-full"
           >
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
