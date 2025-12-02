@@ -109,6 +109,40 @@ export default {
 				'gradient-x': {
 					'0%, 100%': { 'background-position': '0% 50%' },
 					'50%': { 'background-position': '100% 50%' }
+				},
+				'shimmer': {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(100%)' }
+				},
+				'premium-float': {
+					'0%, 100%': { transform: 'translateY(0) rotateX(0deg)' },
+					'50%': { transform: 'translateY(-20px) rotateX(5deg)' }
+				},
+				'particle-rise': {
+					'0%': { opacity: '0', transform: 'translateY(100px) scale(0)' },
+					'20%': { opacity: '1' },
+					'80%': { opacity: '1' },
+					'100%': { opacity: '0', transform: 'translateY(-100px) scale(1.5)' }
+				},
+				'border-flow': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' }
+				},
+				'holographic': {
+					'0%, 100%': { 
+						backgroundPosition: '0% 50%',
+						filter: 'hue-rotate(0deg)'
+					},
+					'50%': { 
+						backgroundPosition: '100% 50%',
+						filter: 'hue-rotate(30deg)'
+					}
+				},
+				'cyber-scan': {
+					'0%': { transform: 'translateY(-100%)', opacity: '0' },
+					'50%': { opacity: '1' },
+					'100%': { transform: 'translateY(100%)', opacity: '0' }
 				}
 			},
 			animation: {
@@ -119,7 +153,13 @@ export default {
 				'glow-pulse': 'glow-pulse 2.2s ease-in-out infinite',
 				'node-pulse': 'node-pulse 2s ease-out infinite',
 				'marquee': 'marquee 30s linear infinite',
-				'gradient-x': 'gradient-x 3s ease infinite'
+				'gradient-x': 'gradient-x 3s ease infinite',
+				'shimmer': 'shimmer 3s ease-in-out infinite',
+				'premium-float': 'premium-float 4s ease-in-out infinite',
+				'particle-rise': 'particle-rise 6s ease-in-out infinite',
+				'border-flow': 'border-flow 3s ease-in-out infinite',
+				'holographic': 'holographic 3s ease-in-out infinite',
+				'cyber-scan': 'cyber-scan 4s linear infinite'
 			}
 		}
 	},
