@@ -14,6 +14,7 @@ import { EnhancedCTA } from "@/components/EnhancedCTA";
 import { WhyChooseCyvance } from "@/components/WhyChooseCyvance";
 import { StickyHeader } from "@/components/StickyHeader";
 import BlogResourcesHub from "@/components/BlogResourcesHub";
+import { RedBlueTeamSection } from "@/components/RedBlueTeamSection";
 
 const Index = () => {
   return (
@@ -281,6 +282,11 @@ const Index = () => {
         {/* Why Choose Cyvance - Advanced Cyber-themed Section */}
         <div id="why-us" data-reveal="scale">
           <WhyChooseCyvance />
+        </div>
+
+        {/* Red Team / Blue Team Simulation Section */}
+        <div data-reveal="scale">
+          <RedBlueTeamSection />
         </div>
 
         {/* Blog & Resources Intelligence Hub */}
