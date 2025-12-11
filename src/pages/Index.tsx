@@ -20,36 +20,26 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <StickyHeader />
 
-      <main className="pt-16 depth-3d"> {/* Add padding-top to account for fixed header */}
+      <main className="pt-16"> {/* Add padding-top to account for fixed header */}
         {/* Hero Section */}
         <section className="relative cyber-grid overflow-hidden">
-          {/* Advanced Background Layers */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-[hsl(var(--neon-blue)/0.15)] rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '4s' }} />
-            <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-[hsl(var(--cyber-purple)/0.15)] rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }} />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-[hsl(var(--neon-cyan)/0.1)] rounded-full blur-[150px] animate-pulse" style={{ animationDuration: '8s', animationDelay: '2s' }} />
-          </div>
-
           <div className="container mx-auto relative">
             <div className="grid lg:grid-cols-2 gap-12 items-center py-20 md:py-32">
-              <div className="order-2 lg:order-1 space-y-8 parallax-layer" style={{ '--depth': '20px' } as React.CSSProperties}>
+              <div className="order-2 lg:order-1 space-y-8">
                 <div className="space-y-6">
-                  <div data-reveal="scale" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue)/0.15)] to-[hsl(var(--cyber-purple)/0.15)] border border-[hsl(var(--neon-blue)/0.4)] text-sm font-mono uppercase tracking-wider hover:shadow-[0_0_30px_hsl(var(--neon-blue)/0.4)] transition-all duration-500 hover:scale-105 backdrop-blur-xl energy-border">
-                    <span className="relative">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[hsl(var(--electric-green))] block" />
-                      <span className="absolute inset-0 h-2.5 w-2.5 rounded-full bg-[hsl(var(--electric-green))] animate-ping" />
-                    </span>
+                  <div data-reveal="scale" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] border border-[hsl(var(--neon-blue)/0.3)] text-sm font-mono uppercase tracking-wider hover:shadow-[0_0_20px_hsl(var(--neon-blue)/0.2)] transition-all duration-300">
+                    <span className="h-2 w-2 rounded-full bg-[hsl(var(--electric-green))] animate-pulse" />
                     System Status: Secure
                   </div>
-                  <h1 data-reveal="fade" className="font-display text-5xl md:text-6xl lg:text-7xl leading-tight">
-                    <span className="inline-block hover:scale-105 transition-transform duration-300">Enter the Digital</span>
+                  <h1 data-reveal="fade" className="font-display text-5xl md:text-6xl lg:text-7xl leading-tight text-glow">
+                    Enter the Digital
                     <br />
-                    <span className="holographic-text inline-block hover:scale-110 transition-transform duration-500 cursor-pointer">
+                    <span className="bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent animate-pulse">
                       Fortress
                     </span>
                   </h1>
-                  <p data-reveal="slide-up" className="text-muted-foreground text-lg md:text-xl max-w-prose leading-relaxed hover:text-foreground transition-colors duration-300">
+                  <p data-reveal="slide-up" className="text-muted-foreground text-lg md:text-xl max-w-prose leading-relaxed">
                     Military-grade cybersecurity that evolves with your threat landscape. AI-powered defense, real-time intelligence, and zero-trust architecture delivered seamlessly.
                   </p>
                 </div>
@@ -58,77 +48,47 @@ const Index = () => {
                   <Button 
                     variant="hero" 
                     size="lg" 
-                    className="group magnetic-button relative overflow-hidden"
+                    className="group hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.4)] hover:scale-105 transition-all duration-300"
                   >
-                    <span className="relative z-10 flex items-center">
-                      <Scan className="mr-2 h-5 w-5 group-hover:rotate-180 transition-transform duration-500" />
-                      Start Security Audit
-                      <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-2" />
-                    </span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                    <Scan className="mr-2 h-4 w-4" />
+                    Start Security Audit
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Button>
                   <Button 
                     variant="neon" 
                     size="lg" 
-                    className="group magnetic-button relative overflow-hidden backdrop-blur-xl"
+                    className="hover:shadow-[0_0_30px_hsl(var(--neon-blue)/0.3)] hover:scale-105 transition-all duration-300"
                   >
-                    <span className="relative z-10 flex items-center">
-                      Live Demo
-                      <span className="ml-2 inline-block group-hover:animate-pulse">▶</span>
-                    </span>
+                    Live Demo
                   </Button>
                 </div>
 
                 <div data-reveal="slide-left" className="grid grid-cols-2 gap-6 pt-6">
-                  <div className="premium-card flex items-center gap-3 p-4 rounded-xl group cursor-pointer">
-                    <div className="relative">
-                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[hsl(var(--electric-green)/0.3)] to-[hsl(var(--electric-green)/0.1)] border border-[hsl(var(--electric-green)/0.4)] flex items-center justify-center group-hover:scale-110 transition-all duration-500 group-hover:rotate-12">
-                        <ShieldCheck className="h-6 w-6 text-[hsl(var(--electric-green))] group-hover:drop-shadow-[0_0_8px_hsl(var(--electric-green))]" />
-                      </div>
-                      <div className="absolute inset-0 bg-[hsl(var(--electric-green)/0.3)] rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300">
+                    <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--electric-green)/0.2)] to-[hsl(var(--electric-green)/0.05)] border border-[hsl(var(--electric-green)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--electric-green)/0.3)] transition-all duration-300">
+                      <ShieldCheck className="h-5 w-5 text-[hsl(var(--electric-green))]" />
                     </div>
-                    <div className="flex-1">
-                      <div className="text-sm font-semibold group-hover:text-glow transition-all duration-300">24/7 SOC</div>
-                      <div className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Always Protected</div>
+                    <div>
+                      <div className="text-sm font-semibold">24/7 SOC</div>
+                      <div className="text-xs text-muted-foreground">Always Protected</div>
                     </div>
                   </div>
-                  <div className="premium-card flex items-center gap-3 p-4 rounded-xl group cursor-pointer">
-                    <div className="relative">
-                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.3)] to-[hsl(var(--neon-cyan)/0.1)] border border-[hsl(var(--neon-cyan)/0.4)] flex items-center justify-center group-hover:scale-110 transition-all duration-500 group-hover:rotate-12">
-                        <Network className="h-6 w-6 text-[hsl(var(--neon-cyan))] group-hover:drop-shadow-[0_0_8px_hsl(var(--neon-cyan))]" />
-                      </div>
-                      <div className="absolute inset-0 bg-[hsl(var(--neon-cyan)/0.3)] rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300">
+                    <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] to-[hsl(var(--neon-cyan)/0.05)] border border-[hsl(var(--neon-cyan)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--neon-cyan)/0.3)] transition-all duration-300">
+                      <Network className="h-5 w-5 text-[hsl(var(--neon-cyan))]" />
                     </div>
-                    <div className="flex-1">
-                      <div className="text-sm font-semibold group-hover:text-glow transition-all duration-300">Zero Trust</div>
-                      <div className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">Never Trust, Always Verify</div>
+                    <div>
+                      <div className="text-sm font-semibold">Zero Trust</div>
+                      <div className="text-xs text-muted-foreground">Never Trust, Always Verify</div>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <div data-reveal="scale" className="order-1 lg:order-2 relative parallax-layer" style={{ '--depth': '40px' } as React.CSSProperties}>
-                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--cyber-purple)/0.2)] rounded-3xl blur-[100px] animate-pulse" style={{ animationDuration: '3s' }} />
-                <div className="absolute inset-0 bg-gradient-to-l from-[hsl(var(--neon-cyan)/0.15)] to-[hsl(var(--electric-green)/0.1)] rounded-3xl blur-[120px] animate-pulse" style={{ animationDuration: '5s', animationDelay: '1.5s' }} />
-                <div className="relative group cursor-pointer perspective-1000">
-                  <div className="transition-all duration-700 group-hover:scale-105 group-hover:rotate-y-12 will-change-transform">
-                    <HeroGlobe />
-                  </div>
-                  {/* Floating particles around globe */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {[...Array(6)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="absolute w-2 h-2 bg-[hsl(var(--neon-blue))] rounded-full opacity-60 blur-sm"
-                        style={{
-                          top: `${Math.random() * 100}%`,
-                          left: `${Math.random() * 100}%`,
-                          animation: `particle-rise ${4 + Math.random() * 4}s ease-in-out infinite`,
-                          animationDelay: `${Math.random() * 2}s`
-                        }}
-                      />
-                    ))}
-                  </div>
+              <div data-reveal="scale" className="order-1 lg:order-2 relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] rounded-2xl blur-3xl animate-pulse" />
+                <div className="relative hover:scale-105 transition-transform duration-500">
+                  <HeroGlobe />
                 </div>
               </div>
             </div>
@@ -197,82 +157,79 @@ const Index = () => {
           </div>
           
           <div className="grid lg:grid-cols-3 gap-8">
-            <article data-reveal="slide-up" className="premium-card rounded-2xl p-8 group cursor-pointer transform-gpu">
-              <div className="scan-line mb-6 relative">
-                <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.3)] to-[hsl(var(--neon-blue)/0.1)] border-2 border-[hsl(var(--neon-blue)/0.4)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-                  <ShieldCheck className="h-8 w-8 text-[hsl(var(--neon-blue))] group-hover:drop-shadow-[0_0_10px_hsl(var(--neon-blue))] transition-all" />
+            <article data-reveal="slide-up" className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
+              <div className="scan-line mb-6">
+                <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--neon-blue)/0.05)] border border-[hsl(var(--neon-blue)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--neon-blue)/0.4)] transition-all duration-300">
+                  <ShieldCheck className="h-8 w-8 text-[hsl(var(--neon-blue))]" />
                 </div>
-                <div className="absolute inset-0 bg-[hsl(var(--neon-blue)/0.4)] rounded-xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300 group-hover:tracking-wide">Advanced Risk Assessment</h3>
-              <p className="text-muted-foreground leading-relaxed mb-6 group-hover:text-foreground transition-colors duration-300">
+              <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300">Advanced Risk Assessment</h3>
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 Continuous AI-driven risk analysis with predictive threat modeling and automated vulnerability discovery.
               </p>
               <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--neon-blue))] animate-pulse" />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
                   Continuous security posture monitoring
                 </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--neon-blue))] animate-pulse" style={{ animationDelay: '0.2s' }} />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
                   Automated compliance reporting
                 </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--neon-blue))] animate-pulse" style={{ animationDelay: '0.4s' }} />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
                   Executive security scorecards
                 </li>
               </ul>
             </article>
             
-            <article data-reveal="slide-up" className="premium-card rounded-2xl p-8 group cursor-pointer transform-gpu" style={{ animationDelay: '0.1s' }}>
-              <div className="scan-line mb-6 relative">
-                <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--cyber-purple)/0.3)] to-[hsl(var(--cyber-purple)/0.1)] border-2 border-[hsl(var(--cyber-purple)/0.4)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-                  <AlertTriangle className="h-8 w-8 text-[hsl(var(--cyber-purple))] group-hover:drop-shadow-[0_0_10px_hsl(var(--cyber-purple))] transition-all" />
+            <article data-reveal="slide-up" className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--cyber-purple)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
+              <div className="scan-line mb-6">
+                <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--cyber-purple)/0.2)] to-[hsl(var(--cyber-purple)/0.05)] border border-[hsl(var(--cyber-purple)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--cyber-purple)/0.4)] transition-all duration-300">
+                  <AlertTriangle className="h-8 w-8 text-[hsl(var(--cyber-purple))]" />
                 </div>
-                <div className="absolute inset-0 bg-[hsl(var(--cyber-purple)/0.4)] rounded-xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300 group-hover:tracking-wide">Elite Penetration Testing</h3>
-              <p className="text-muted-foreground leading-relaxed mb-6 group-hover:text-foreground transition-colors duration-300">
+              <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300">Elite Penetration Testing</h3>
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 Elite red team operations fusing human expertise with advanced automation to expose vulnerabilities before adversaries strike.
               </p>
               <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--cyber-purple))] animate-pulse" />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--cyber-purple))]" />
                   Advanced persistent threat simulation
                 </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--cyber-purple))] animate-pulse" style={{ animationDelay: '0.2s' }} />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--cyber-purple))]" />
                   Social engineering assessments
                 </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--cyber-purple))] animate-pulse" style={{ animationDelay: '0.4s' }} />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--cyber-purple))]" />
                   Zero-day vulnerability research
                 </li>
               </ul>
             </article>
             
-            <article data-reveal="slide-up" className="premium-card rounded-2xl p-8 group cursor-pointer transform-gpu" style={{ animationDelay: '0.2s' }}>
-              <div className="scan-line mb-6 relative">
-                <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.3)] to-[hsl(var(--neon-cyan)/0.1)] border-2 border-[hsl(var(--neon-cyan)/0.4)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-                  <Cloud className="h-8 w-8 text-[hsl(var(--neon-cyan))] group-hover:drop-shadow-[0_0_10px_hsl(var(--neon-cyan))] transition-all" />
+            <article data-reveal="slide-up" className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-cyan)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
+              <div className="scan-line mb-6">
+                <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] to-[hsl(var(--neon-cyan)/0.05)] border border-[hsl(var(--neon-cyan)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--neon-cyan)/0.4)] transition-all duration-300">
+                  <Cloud className="h-8 w-8 text-[hsl(var(--neon-cyan))]" />
                 </div>
-                <div className="absolute inset-0 bg-[hsl(var(--neon-cyan)/0.4)] rounded-xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300 group-hover:tracking-wide">Cloud-Native Defense</h3>
-              <p className="text-muted-foreground leading-relaxed mb-6 group-hover:text-foreground transition-colors duration-300">
+              <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300">Cloud-Native Defense</h3>
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 Next-generation cloud architecture with micro-segmentation and serverless protection across multi-cloud environments.
               </p>
               <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-cyan))]" />
                   Kubernetes security hardening
                 </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" style={{ animationDelay: '0.2s' }} />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-cyan))]" />
                   Multi-cloud compliance automation
                 </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-all duration-300 hover:translate-x-2">
-                  <span className="h-2 w-2 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" style={{ animationDelay: '0.4s' }} />
+                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-cyan))]" />
                   Infrastructure as Code security
                 </li>
               </ul>
