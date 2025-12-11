@@ -3,10 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { StickyHeader } from "@/components/StickyHeader";
 import { useNavigate } from "react-router-dom";
+import { useSimulationFeedback } from "@/hooks/useSimulationFeedback";
 import {
   Shield, Swords, ArrowRight, Zap, Target, Lock, Eye, Brain,
   AlertTriangle, Server, Cloud, User, Key, Mail, Network, Activity,
-  CheckCircle, XCircle, Clock, Terminal, ChevronRight
+  CheckCircle, XCircle, Clock, Terminal, ChevronRight, Bug, Skull,
+  PackageSearch, Fingerprint, Globe, Radiation, Volume2, VolumeX
 } from "lucide-react";
 
 // Scenario data
@@ -17,6 +19,7 @@ const scenarios = [
     icon: Mail,
     description: "Social engineering attack targeting employee credentials",
     severity: "High",
+    category: "Social Engineering",
     attackSteps: [
       { step: "Reconnaissance", detail: "Gathering employee data from LinkedIn" },
       { step: "Payload Creation", detail: "Crafting convincing phishing email" },
@@ -38,6 +41,7 @@ const scenarios = [
     icon: Lock,
     description: "Advanced ransomware attack with lateral movement",
     severity: "Critical",
+    category: "Malware",
     attackSteps: [
       { step: "Initial Access", detail: "Exploiting vulnerable RDP service" },
       { step: "Persistence", detail: "Installing backdoor malware" },
@@ -59,6 +63,7 @@ const scenarios = [
     icon: Cloud,
     description: "Exploiting exposed S3 bucket with sensitive data",
     severity: "High",
+    category: "Cloud Security",
     attackSteps: [
       { step: "Scanning", detail: "Automated cloud asset discovery" },
       { step: "Access Check", detail: "Testing bucket permissions" },
@@ -80,6 +85,7 @@ const scenarios = [
     icon: Key,
     description: "Automated attack using breached credentials",
     severity: "Medium",
+    category: "Identity Attack",
     attackSteps: [
       { step: "Data Acquisition", detail: "Purchasing leaked credentials" },
       { step: "Bot Setup", detail: "Configuring attack infrastructure" },
@@ -101,6 +107,7 @@ const scenarios = [
     icon: User,
     description: "Malicious insider abusing access privileges",
     severity: "Critical",
+    category: "Insider Threat",
     attackSteps: [
       { step: "Access Abuse", detail: "Using legitimate credentials" },
       { step: "Privilege Request", detail: "Requesting elevated access" },
@@ -114,6 +121,81 @@ const scenarios = [
       { step: "DLP Alert", detail: "Data movement flagged", module: "DLP" },
       { step: "Session Recording", detail: "Activity captured", module: "PAM" },
       { step: "HR Notification", detail: "Escalation to management", module: "SOAR" },
+    ],
+  },
+  // ADVANCED SCENARIOS
+  {
+    id: "supply-chain",
+    name: "Supply Chain Attack",
+    icon: PackageSearch,
+    description: "Compromising trusted third-party software dependencies",
+    severity: "Critical",
+    category: "Advanced Persistent",
+    attackSteps: [
+      { step: "Vendor Reconnaissance", detail: "Identifying weak supply chain links" },
+      { step: "Dependency Injection", detail: "Injecting malicious code into trusted package" },
+      { step: "Distribution", detail: "Propagating through legitimate update channels" },
+      { step: "Activation", detail: "Triggering payload on target systems" },
+      { step: "C2 Establishment", detail: "Establishing command & control channel" },
+      { step: "Data Harvesting", detail: "Exfiltrating sensitive data at scale" },
+    ],
+    defenseSteps: [
+      { step: "SBOM Analysis", detail: "Software Bill of Materials verification", module: "Supply Chain Security" },
+      { step: "Integrity Verification", detail: "Hash and signature validation", module: "Code Signing" },
+      { step: "Behavioral Sandbox", detail: "Testing updates in isolated environment", module: "Sandbox" },
+      { step: "Network Anomaly Detection", detail: "Identifying unusual C2 traffic", module: "NDR" },
+      { step: "Zero Trust Enforcement", detail: "Blocking unauthorized lateral movement", module: "Zero Trust" },
+      { step: "Threat Intelligence", detail: "Cross-referencing with global threat feeds", module: "Threat Intel" },
+    ],
+  },
+  {
+    id: "zero-day",
+    name: "Zero-Day Exploit",
+    icon: Bug,
+    description: "Exploiting unknown vulnerability before patch availability",
+    severity: "Critical",
+    category: "Advanced Exploit",
+    attackSteps: [
+      { step: "Vulnerability Discovery", detail: "Identifying unpatched security flaw" },
+      { step: "Exploit Development", detail: "Crafting weaponized exploit code" },
+      { step: "Initial Compromise", detail: "Gaining foothold through exploit" },
+      { step: "Privilege Escalation", detail: "Elevating to system-level access" },
+      { step: "Persistence Installation", detail: "Deploying rootkit for long-term access" },
+      { step: "Objective Execution", detail: "Achieving attack goals undetected" },
+    ],
+    defenseSteps: [
+      { step: "Behavioral Analysis", detail: "Detecting anomalous process behavior", module: "XDR" },
+      { step: "Memory Protection", detail: "Exploit mitigation technologies active", module: "Endpoint Protection" },
+      { step: "Micro-Segmentation", detail: "Limiting blast radius of compromise", module: "Network Security" },
+      { step: "Threat Hunting", detail: "Proactive hunting for IOCs", module: "24/7 SOC" },
+      { step: "Virtual Patching", detail: "WAF rules blocking exploit attempts", module: "WAF" },
+      { step: "Forensic Analysis", detail: "Deep investigation and attribution", module: "DFIR Team" },
+    ],
+  },
+  {
+    id: "apt",
+    name: "APT Campaign Simulation",
+    icon: Skull,
+    description: "Nation-state level advanced persistent threat operation",
+    severity: "Critical",
+    category: "Nation State",
+    attackSteps: [
+      { step: "Strategic Targeting", detail: "Long-term intelligence gathering on target" },
+      { step: "Spear Phishing", detail: "Highly targeted social engineering attack" },
+      { step: "Custom Malware Deployment", detail: "Deploying bespoke RAT/backdoor" },
+      { step: "Living Off the Land", detail: "Using legitimate tools to avoid detection" },
+      { step: "Credential Harvesting", detail: "Extracting domain admin credentials" },
+      { step: "Data Staging", detail: "Preparing data for covert exfiltration" },
+      { step: "Covert Exfiltration", detail: "Slow data leak via encrypted channels" },
+    ],
+    defenseSteps: [
+      { step: "Advanced Threat Detection", detail: "AI-powered APT behavioral detection", module: "XDR Platform" },
+      { step: "Deception Technology", detail: "Honeypots detecting lateral movement", module: "Deception Grid" },
+      { step: "Credential Protection", detail: "Privileged access management active", module: "PAM" },
+      { step: "Network Traffic Analysis", detail: "Deep packet inspection for C2", module: "NDR" },
+      { step: "Threat Intelligence Correlation", detail: "Matching IOCs to known APT groups", module: "Threat Intel" },
+      { step: "Incident Response", detail: "Coordinated containment and eradication", module: "IR Team" },
+      { step: "Recovery & Hardening", detail: "System restoration with enhanced controls", module: "Security Ops" },
     ],
   },
 ];
@@ -163,21 +245,28 @@ const ScenarioCard = ({ scenario, isSelected, onClick }: { scenario: typeof scen
     whileHover={{ scale: 1.02 }}
     whileTap={{ scale: 0.98 }}
   >
-    <div className="flex items-center gap-3">
-      <div className={`p-2 rounded-lg ${isSelected ? "bg-[hsl(var(--neon-blue))]/20" : "bg-muted/50"}`}>
-        <scenario.icon className={`w-5 h-5 ${isSelected ? "text-[hsl(var(--neon-blue))]" : "text-muted-foreground"}`} />
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-3">
+        <div className={`p-2 rounded-lg ${isSelected ? "bg-[hsl(var(--neon-blue))]/20" : "bg-muted/50"}`}>
+          <scenario.icon className={`w-5 h-5 ${isSelected ? "text-[hsl(var(--neon-blue))]" : "text-muted-foreground"}`} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h4 className="font-semibold text-sm truncate">{scenario.name}</h4>
+          <p className="text-xs text-muted-foreground truncate">{scenario.description}</p>
+        </div>
       </div>
-      <div className="flex-1 min-w-0">
-        <h4 className="font-semibold text-sm truncate">{scenario.name}</h4>
-        <p className="text-xs text-muted-foreground truncate">{scenario.description}</p>
+      <div className="flex items-center justify-between gap-2">
+        <span className="px-2 py-0.5 text-[10px] rounded-full bg-muted/50 text-muted-foreground">
+          {scenario.category}
+        </span>
+        <span className={`px-2 py-0.5 text-[10px] rounded-full ${
+          scenario.severity === "Critical" ? "bg-red-500/20 text-red-400" :
+          scenario.severity === "High" ? "bg-orange-500/20 text-orange-400" :
+          "bg-yellow-500/20 text-yellow-400"
+        }`}>
+          {scenario.severity}
+        </span>
       </div>
-      <span className={`px-2 py-1 text-xs rounded-full ${
-        scenario.severity === "Critical" ? "bg-red-500/20 text-red-400" :
-        scenario.severity === "High" ? "bg-orange-500/20 text-orange-400" :
-        "bg-yellow-500/20 text-yellow-400"
-      }`}>
-        {scenario.severity}
-      </span>
     </div>
   </motion.button>
 );
@@ -277,11 +366,13 @@ const LiveLogPanel = ({ logs }: { logs: { time: string; message: string; type: "
 
 const Simulation = () => {
   const navigate = useNavigate();
+  const feedback = useSimulationFeedback();
   const [selectedScenario, setSelectedScenario] = useState(scenarios[0]);
   const [isDefenseMode, setIsDefenseMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(-1);
   const [isRunning, setIsRunning] = useState(false);
   const [logs, setLogs] = useState<{ time: string; message: string; type: "info" | "warning" | "success" | "error" }[]>([]);
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
   const getCurrentTime = () => {
     const now = new Date();
@@ -297,6 +388,9 @@ const Simulation = () => {
     setCurrentStep(0);
     setLogs([]);
     addLog(`Starting ${isDefenseMode ? "Defense" : "Attack"} simulation...`, "info");
+    if (soundEnabled) {
+      feedback.feedbackScan();
+    }
   };
 
   useEffect(() => {
@@ -308,6 +402,15 @@ const Simulation = () => {
       const step = steps[currentStep];
       addLog(`[${isDefenseMode ? "DEFENSE" : "ATTACK"}] ${step.step}: ${step.detail}`, isDefenseMode ? "success" : "warning");
       
+      // Sound and haptic feedback for each step
+      if (soundEnabled) {
+        if (selectedScenario.severity === "Critical") {
+          feedback.feedbackCritical();
+        } else {
+          feedback.feedbackStep(isDefenseMode);
+        }
+      }
+      
       const timer = setTimeout(() => {
         setCurrentStep(prev => prev + 1);
       }, 2000);
@@ -316,20 +419,38 @@ const Simulation = () => {
     } else {
       addLog(isDefenseMode ? "Threat successfully neutralized!" : "Attack sequence complete.", isDefenseMode ? "success" : "error");
       setIsRunning(false);
+      if (soundEnabled) {
+        if (isDefenseMode) {
+          feedback.feedbackSuccess();
+        } else {
+          feedback.feedbackError();
+        }
+      }
     }
-  }, [currentStep, isRunning, isDefenseMode, selectedScenario]);
+  }, [currentStep, isRunning, isDefenseMode, selectedScenario, soundEnabled, feedback]);
 
   const toggleMode = () => {
     setIsDefenseMode(!isDefenseMode);
     setCurrentStep(-1);
     setIsRunning(false);
     addLog(`Switching to ${!isDefenseMode ? "Defense" : "Attack"} Mode`, "info");
+    if (soundEnabled) {
+      feedback.feedbackToggle();
+    }
   };
 
   const resetSimulation = () => {
     setCurrentStep(-1);
     setIsRunning(false);
     setLogs([]);
+  };
+
+  const handleScenarioSelect = (scenario: typeof scenarios[0]) => {
+    setSelectedScenario(scenario);
+    resetSimulation();
+    if (soundEnabled) {
+      feedback.feedbackAlert();
+    }
   };
 
   return (
@@ -356,9 +477,23 @@ const Simulation = () => {
               <br />
               <span className="text-foreground">Cyber Simulation</span>
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-4">
               Experience real-world cyber scenarios from both perspectives. Toggle between attack and defense modes to understand complete threat lifecycles.
             </p>
+            {/* Sound Toggle */}
+            <motion.button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-300 ${
+                soundEnabled 
+                  ? "border-[hsl(var(--electric-green))]/50 bg-[hsl(var(--electric-green))]/10 text-[hsl(var(--electric-green))]"
+                  : "border-border/50 bg-muted/20 text-muted-foreground"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+              <span className="text-sm font-medium">{soundEnabled ? "Sound On" : "Sound Off"}</span>
+            </motion.button>
           </motion.div>
 
           {/* Main Grid */}
@@ -369,16 +504,13 @@ const Simulation = () => {
                 <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-4">
                   Select Threat Scenario
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
                   {scenarios.map((scenario) => (
                     <ScenarioCard
                       key={scenario.id}
                       scenario={scenario}
                       isSelected={selectedScenario.id === scenario.id}
-                      onClick={() => {
-                        setSelectedScenario(scenario);
-                        resetSimulation();
-                      }}
+                      onClick={() => handleScenarioSelect(scenario)}
                     />
                   ))}
                 </div>
