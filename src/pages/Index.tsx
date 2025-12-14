@@ -15,6 +15,7 @@ import { WhyChooseCyvance } from "@/components/WhyChooseCyvance";
 import { StickyHeader } from "@/components/StickyHeader";
 import BlogResourcesHub from "@/components/BlogResourcesHub";
 import { RedBlueTeamSection } from "@/components/RedBlueTeamSection";
+import { VulnerabilityIntelligenceCTA } from "@/components/VulnerabilityIntelligenceCTA";
 
 const Index = () => {
   return (
@@ -287,6 +288,11 @@ const Index = () => {
         {/* Red Team / Blue Team Simulation Section */}
         <div data-reveal="scale">
           <RedBlueTeamSection />
+        </div>
+
+        {/* Vulnerability Intelligence CTA Section */}
+        <div data-reveal="scale">
+          <VulnerabilityIntelligenceCTA />
         </div>
 
         {/* Blog & Resources Intelligence Hub */}
