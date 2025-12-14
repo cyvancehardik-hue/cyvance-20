@@ -12,20 +12,16 @@ import CustomerJourney from "@/components/CustomerJourney";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
 import { EnhancedCTA } from "@/components/EnhancedCTA";
 import { WhyChooseCyvance } from "@/components/WhyChooseCyvance";
-import { IntelligentHeader } from "@/components/IntelligentHeader";
-import { AtmosphericBackground } from "@/components/AtmosphericBackground";
-import { IntelligentCursor } from "@/components/IntelligentCursor";
+import { StickyHeader } from "@/components/StickyHeader";
 import BlogResourcesHub from "@/components/BlogResourcesHub";
 import { RedBlueTeamSection } from "@/components/RedBlueTeamSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <AtmosphericBackground />
-      <IntelligentCursor />
-      <IntelligentHeader />
+      <StickyHeader />
 
-      <main className="pt-20">
+      <main className="pt-16"> {/* Add padding-top to account for fixed header */}
         {/* Hero Section */}
         <section className="relative cyber-grid overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
