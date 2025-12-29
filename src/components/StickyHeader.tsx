@@ -76,25 +76,25 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
       id="site-header"
       ref={headerRef}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out",
         isVisible ? "translate-y-0" : "-translate-y-full",
         isScrolled 
-          ? "backdrop-blur-xl bg-background/80 border-b border-border/50 shadow-lg shadow-black/5" 
-          : "backdrop-blur-sm bg-background/60",
+          ? "liquid-glass border-b border-border/30" 
+          : "backdrop-blur-md bg-background/40",
         className
       )}
     >
-      <nav className="container mx-auto flex items-center justify-between py-4">
+      <nav className="container mx-auto flex items-center justify-between py-3.5 lg:py-4">
         {/* Logo */}
         <a 
           href="#" 
-          className="font-display text-xl tracking-widest text-glow hover:scale-105 transition-transform duration-200"
+          className="font-display text-lg lg:text-xl tracking-[0.25em] text-foreground/90 hover:text-foreground transition-all duration-300 hover:tracking-[0.3em]"
         >
           CYVANCE
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8 text-sm">
+        <div className="hidden md:flex items-center gap-6 lg:gap-8 text-[13px] font-medium">
           {[
             { id: "services", label: "Services" },
             { id: "stats", label: "Impact" },
@@ -112,16 +112,17 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
                 href={isRoute ? id : `#${id}`}
                 onClick={handleNavClick(id)}
                 className={cn(
-                  "story-link relative transition-all duration-200 hover:text-foreground",
+                  "nav-link relative py-1 transition-all duration-300",
                   isActive 
-                    ? "text-foreground font-medium" 
-                    : "text-muted-foreground"
+                    ? "text-foreground" 
+                    : "text-muted-foreground/80 hover:text-foreground"
                 )}
               >
                 {label}
-                {isActive && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full" />
-                )}
+                <span className={cn(
+                  "absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-[hsl(var(--neon-blue)/0.8)] to-[hsl(var(--cyber-purple)/0.6)] rounded-full transition-transform duration-300 origin-left",
+                  isActive ? "scale-x-100" : "scale-x-0"
+                )} />
               </a>
             );
           })}
@@ -129,26 +130,27 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
           {/* Company Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger className={cn(
-              "story-link relative transition-all duration-200 hover:text-foreground inline-flex items-center gap-1 outline-none",
+              "nav-link relative py-1 transition-all duration-300 inline-flex items-center gap-1.5 outline-none group",
               companyMenuItems.some(item => 
                 item.id.startsWith('/') 
                   ? window.location.pathname === item.id 
                   : activeId === item.id
               )
-                ? "text-foreground font-medium" 
-                : "text-muted-foreground"
+                ? "text-foreground" 
+                : "text-muted-foreground/80 hover:text-foreground"
             )}>
               Company
-              <ChevronDown className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-              {companyMenuItems.some(item => 
-                item.id.startsWith('/') 
-                  ? window.location.pathname === item.id 
-                  : activeId === item.id
-              ) && (
-                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] rounded-full" />
-              )}
+              <ChevronDown className="h-3 w-3 transition-transform duration-300 group-data-[state=open]:rotate-180 opacity-60" />
+              <span className={cn(
+                "absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-[hsl(var(--neon-blue)/0.8)] to-[hsl(var(--cyber-purple)/0.6)] rounded-full transition-transform duration-300 origin-left",
+                companyMenuItems.some(item => 
+                  item.id.startsWith('/') 
+                    ? window.location.pathname === item.id 
+                    : activeId === item.id
+                ) ? "scale-x-100" : "scale-x-0"
+              )} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-background/95 backdrop-blur-xl border-border/50 min-w-[150px]">
+            <DropdownMenuContent align="start" className="dropdown-glass min-w-[160px] p-1.5">
               {companyMenuItems.map(({ id, label, special }) => {
                 const isRoute = id.startsWith('/');
                 const isActive = isRoute ? window.location.pathname === id : activeId === id;
@@ -157,11 +159,11 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
                   <DropdownMenuItem 
                     key={id}
                     className={cn(
-                      "cursor-pointer transition-colors focus:bg-accent focus:text-accent-foreground",
+                      "cursor-pointer transition-all duration-200 rounded-md text-[13px] focus:bg-accent/50",
                       special && "milestones-glitch-pulse",
                       isActive 
-                        ? "bg-accent text-foreground font-medium" 
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "bg-accent/40 text-foreground" 
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
                     )}
                     onClick={handleNavClick(id)}
                   >
@@ -174,19 +176,21 @@ export const StickyHeader = ({ className }: StickyHeaderProps) => {
         </div>
 
         {/* Desktop Actions */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2.5">
           <Button 
-            variant="neon" 
-            className="hover:shadow-[0_0_20px_hsl(var(--neon-blue)/0.3)] transition-all duration-300"
+            variant="ghost" 
+            size="sm"
+            className="text-muted-foreground hover:text-foreground text-[13px] font-medium h-9 px-4"
           >
             Sign In
           </Button>
           <Button 
-            variant="hero" 
-            className="group hover:shadow-[0_0_30px_hsl(var(--neon-blue)/0.4)] transition-all duration-300"
+            variant="premium" 
+            size="sm"
+            className="group h-9 px-5"
           >
             Get Security Audit
-            <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
           </Button>
         </div>
 

@@ -336,6 +336,59 @@
 
 /* Utilities */
 @layer utilities {
+  /* Premium liquid glass effect */
+  .liquid-glass {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background) / 0.85) 0%,
+      hsl(var(--background) / 0.75) 100%
+    );
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: 
+      0 1px 0 0 hsl(var(--foreground) / 0.03) inset,
+      0 8px 32px -8px hsl(0 0% 0% / 0.12);
+  }
+  
+  /* Dropdown glass effect */
+  .dropdown-glass {
+    background: hsl(var(--background) / 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsl(var(--border) / 0.5);
+    box-shadow: 
+      0 4px 24px -4px hsl(0 0% 0% / 0.2),
+      0 0 0 1px hsl(var(--foreground) / 0.02) inset;
+  }
+  
+  /* Nav link style */
+  .nav-link {
+    letter-spacing: 0.01em;
+  }
+  
+  /* Premium card effect */
+  .premium-card {
+    background: linear-gradient(
+      145deg,
+      hsl(var(--card) / 0.6) 0%,
+      hsl(var(--card) / 0.4) 100%
+    );
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border) / 0.4);
+    box-shadow: 
+      0 0 0 1px hsl(var(--foreground) / 0.02) inset,
+      0 4px 24px -8px hsl(0 0% 0% / 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .premium-card:hover {
+    border-color: hsl(var(--border) / 0.6);
+    box-shadow: 
+      0 0 0 1px hsl(var(--foreground) / 0.03) inset,
+      0 8px 32px -8px hsl(0 0% 0% / 0.2);
+    transform: translateY(-2px);
+  }
+
   .text-glow {
     text-shadow: 0 0 0.8rem hsl(var(--neon-blue)/0.45), 0 0 1.8rem hsl(var(--cyber-purple)/0.35);
   }
@@ -343,11 +396,20 @@
     box-shadow: 0 0 0 2px hsl(var(--neon-blue)/0.35), var(--shadow-glow);
   }
   .glow-card {
-    background: linear-gradient(135deg, hsl(var(--card)/0.95) 0%, hsl(var(--card)/0.85) 100%);
-    border: 1px solid hsl(var(--border));
-    box-shadow: var(--shadow-elev), var(--shadow-glow);
-    backdrop-filter: blur(16px);
+    background: linear-gradient(135deg, hsl(var(--card)/0.8) 0%, hsl(var(--card)/0.6) 100%);
+    border: 1px solid hsl(var(--border) / 0.5);
+    box-shadow: 
+      0 4px 24px -8px hsl(var(--neon-blue)/0.15),
+      0 0 0 1px hsl(var(--foreground) / 0.02) inset;
+    backdrop-filter: blur(20px);
     position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glow-card:hover {
+    border-color: hsl(var(--neon-blue) / 0.3);
+    box-shadow: 
+      0 8px 32px -8px hsl(var(--neon-blue)/0.2),
+      0 0 0 1px hsl(var(--foreground) / 0.03) inset;
   }
   .glow-card::before {
     content: "";
@@ -355,25 +417,30 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, hsl(var(--neon-blue)/0.3), transparent 40%, hsl(var(--cyber-purple)/0.2));
+    background: linear-gradient(135deg, hsl(var(--neon-blue)/0.2), transparent 50%, hsl(var(--cyber-purple)/0.15));
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: xor;
     -webkit-mask-composite: xor;
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .glow-card:hover::before {
+    opacity: 1;
   }
   .hero-card {
-    background: linear-gradient(135deg, hsl(var(--card)/0.1) 0%, hsl(var(--card)/0.05) 100%);
-    border: 1px solid hsl(var(--border)/0.3);
-    backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, hsl(var(--card)/0.08) 0%, hsl(var(--card)/0.04) 100%);
+    border: 1px solid hsl(var(--border)/0.2);
+    backdrop-filter: blur(24px);
     box-shadow: 
-      0 4px 32px -8px hsl(var(--neon-blue)/0.15),
-      0 0 0 1px hsl(var(--neon-blue)/0.1) inset;
+      0 4px 32px -8px hsl(var(--neon-blue)/0.1),
+      0 0 0 1px hsl(var(--neon-blue)/0.05) inset;
   }
   .cyber-grid {
     background-image: 
-      linear-gradient(rgba(var(--neon-blue-rgb)/0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(var(--neon-blue-rgb)/0.03) 1px, transparent 1px);
-    background-size: 32px 32px;
+      linear-gradient(rgba(var(--neon-blue-rgb)/0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--neon-blue-rgb)/0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
   .interactive-gradient {
     position: relative;
