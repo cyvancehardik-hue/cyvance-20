@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import HeroGlobe from "@/components/graphics/HeroGlobe";
 import { ShieldCheck, Bug, Cloud, ArrowRight, Scan, AlertTriangle, Network, Brain, Eye, Lock, Shield } from "lucide-react";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { TestimonialsMarquee } from "@/components/TestimonialsMarquee";
@@ -16,90 +15,16 @@ import { StickyHeader } from "@/components/StickyHeader";
 import BlogResourcesHub from "@/components/BlogResourcesHub";
 import { RedBlueTeamSection } from "@/components/RedBlueTeamSection";
 import { VulnerabilityIntelligenceCTA } from "@/components/VulnerabilityIntelligenceCTA";
+import { HeroSection } from "@/components/HeroSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <StickyHeader />
 
-      <main className="pt-16"> {/* Add padding-top to account for fixed header */}
-        {/* Hero Section */}
-        <section className="relative cyber-grid overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
-          <div className="container mx-auto relative">
-            <div className="grid lg:grid-cols-2 gap-12 items-center py-20 md:py-32">
-              <div className="order-2 lg:order-1 space-y-8">
-                <div className="space-y-6">
-                  <div data-reveal="scale" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] border border-[hsl(var(--neon-blue)/0.3)] text-sm font-mono uppercase tracking-wider hover:shadow-[0_0_20px_hsl(var(--neon-blue)/0.2)] transition-all duration-300">
-                    <span className="h-2 w-2 rounded-full bg-[hsl(var(--electric-green))] animate-pulse" />
-                    System Status: Secure
-                  </div>
-                  <h1 data-reveal="fade" className="font-display text-5xl md:text-6xl lg:text-7xl leading-tight text-glow">
-                    Enter the Digital
-                    <br />
-                    <span className="bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent animate-pulse">
-                      Fortress
-                    </span>
-                  </h1>
-                  <p data-reveal="slide-up" className="text-muted-foreground text-lg md:text-xl max-w-prose leading-relaxed">
-                    Military-grade cybersecurity that evolves with your threat landscape. AI-powered defense, real-time intelligence, and zero-trust architecture delivered seamlessly.
-                  </p>
-                </div>
-                
-                <div data-reveal="slide-up" className="flex flex-wrap items-center gap-4">
-                  <Button 
-                    variant="hero" 
-                    size="lg" 
-                    className="group hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.4)] hover:scale-105 transition-all duration-300"
-                  >
-                    <Scan className="mr-2 h-4 w-4" />
-                    Start Security Audit
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                  <Button 
-                    variant="neon" 
-                    size="lg" 
-                    className="hover:shadow-[0_0_30px_hsl(var(--neon-blue)/0.3)] hover:scale-105 transition-all duration-300"
-                  >
-                    Live Demo
-                  </Button>
-                </div>
-
-                <div data-reveal="slide-left" className="grid grid-cols-2 gap-6 pt-6">
-                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300">
-                    <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--electric-green)/0.2)] to-[hsl(var(--electric-green)/0.05)] border border-[hsl(var(--electric-green)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--electric-green)/0.3)] transition-all duration-300">
-                      <ShieldCheck className="h-5 w-5 text-[hsl(var(--electric-green))]" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold">24/7 SOC</div>
-                      <div className="text-xs text-muted-foreground">Always Protected</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors duration-300">
-                    <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] to-[hsl(var(--neon-cyan)/0.05)] border border-[hsl(var(--neon-cyan)/0.3)] flex items-center justify-center hover:shadow-[0_0_15px_hsl(var(--neon-cyan)/0.3)] transition-all duration-300">
-                      <Network className="h-5 w-5 text-[hsl(var(--neon-cyan))]" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold">Zero Trust</div>
-                      <div className="text-xs text-muted-foreground">Never Trust, Always Verify</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div data-reveal="scale" className="order-1 lg:order-2 relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue)/0.1)] to-[hsl(var(--cyber-purple)/0.1)] rounded-2xl blur-3xl animate-pulse" />
-                <div className="relative hover:scale-105 transition-transform duration-500">
-                  <HeroGlobe />
-                </div>
-              </div>
-            </div>
-            
-            <div data-reveal="fade" className="pb-12">
-              <ClientLogos />
-            </div>
-          </div>
-        </section>
+      <main>
+        {/* Premium Hero Section */}
+        <HeroSection />
 
         {/* Enhanced Threat Intelligence Section */}
         <section className="relative py-20 md:py-32 overflow-hidden">
