@@ -336,6 +336,49 @@
 
 /* Utilities */
 @layer utilities {
+  /* Premium navbar glass effect */
+  .navbar-glass {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--background) / 0.85) 0%,
+      hsl(var(--background) / 0.75) 100%
+    );
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid hsl(var(--border) / 0.3);
+    box-shadow: 0 4px 30px -10px hsl(0 0% 0% / 0.15);
+  }
+  
+  /* Navbar dropdown */
+  .navbar-dropdown {
+    background: hsl(var(--background) / 0.98);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid hsl(var(--border) / 0.4);
+    box-shadow: 
+      0 10px 40px -10px hsl(0 0% 0% / 0.25),
+      0 0 0 1px hsl(var(--foreground) / 0.02) inset;
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  /* Announcement badge */
+  .announcement-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm;
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border) / 0.4);
+    backdrop-filter: blur(12px);
+  }
+  
+  /* Floating cards for hero */
+  .floating-card {
+    @apply px-4 py-3 rounded-xl;
+    background: hsl(var(--card) / 0.7);
+    border: 1px solid hsl(var(--border) / 0.3);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px -8px hsl(0 0% 0% / 0.2);
+  }
+
   /* Premium liquid glass effect */
   .liquid-glass {
     background: linear-gradient(
