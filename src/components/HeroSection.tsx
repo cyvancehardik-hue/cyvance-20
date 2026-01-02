@@ -139,7 +139,7 @@ export const HeroSection = () => {
   return (
     <section className="relative min-h-[100vh] flex flex-col overflow-hidden">
       {/* ===== TOP SECTION: Dark background with hero text ===== */}
-      <div className="relative z-20 pt-32 pb-20 lg:pt-40 lg:pb-28">
+      <div className="relative z-20 pt-24 pb-8 lg:pt-32 lg:pb-12">
         {/* Dark background for text area */}
         <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220_30%_5%)] via-[hsl(220_35%_8%)] to-transparent -z-10" />
         
@@ -150,12 +150,12 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 mb-10"
+              className="inline-flex items-center gap-2 mb-6"
             >
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 text-sm">
-                <span className="px-2.5 py-0.5 rounded-full bg-[hsl(200_80%_50%)] text-white text-xs font-semibold">Update</span>
-                <span className="text-white/80">AI-Powered Threat Detection is now live</span>
-                <ArrowRight className="w-3.5 h-3.5 text-white/50" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 text-sm">
+                <span className="px-2 py-0.5 rounded-full bg-[hsl(200_80%_50%)] text-white text-xs font-semibold">Update</span>
+                <span className="text-white/80 text-sm">AI-Powered Threat Detection is now live</span>
+                <ArrowRight className="w-3 h-3 text-white/50" />
               </div>
             </motion.div>
 
@@ -164,7 +164,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.1 }}
-              className="text-4xl md:text-6xl lg:text-[4.5rem] xl:text-[5rem] font-display font-bold tracking-tight mb-8 leading-[1.08] text-white"
+              className="text-3xl md:text-5xl lg:text-6xl xl:text-[4.2rem] font-display font-bold tracking-tight mb-5 leading-[1.1] text-white"
             >
               Secure your infrastructure
               <br />
@@ -176,7 +176,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.2 }}
-              className="text-lg md:text-xl lg:text-[1.35rem] text-white/65 max-w-2xl mx-auto mb-12 leading-relaxed font-light"
+              className="text-base md:text-lg lg:text-xl text-white/65 max-w-2xl mx-auto mb-8 leading-relaxed font-light"
             >
               Advanced penetration testing, risk assessment, and continuous monitoring 
               for organizations that can't afford to be compromised.
@@ -187,18 +187,18 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3"
             >
               <Button 
                 size="lg"
-                className="h-14 px-10 text-base font-semibold bg-[hsl(200_85%_50%)] hover:bg-[hsl(200_85%_45%)] text-white rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-300"
+                className="h-12 px-8 text-sm font-semibold bg-[hsl(200_85%_50%)] hover:bg-[hsl(200_85%_45%)] text-white rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-300"
               >
                 Get Security Assessment
               </Button>
               <Button 
                 variant="outline" 
                 size="lg"
-                className="h-14 px-8 text-base font-medium border-white/20 bg-white/5 hover:bg-white/10 text-white rounded-xl backdrop-blur-sm transition-all duration-300"
+                className="h-12 px-6 text-sm font-medium border-white/20 bg-white/5 hover:bg-white/10 text-white rounded-xl backdrop-blur-sm transition-all duration-300"
               >
                 Talk to founder
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -208,11 +208,11 @@ export const HeroSection = () => {
         </div>
       </div>
 
-      {/* ===== GAP: Visual breathing space ===== */}
-      <div className="h-12 lg:h-20" />
+      {/* ===== GAP: Smaller breathing space ===== */}
+      <div className="h-4 lg:h-8" />
 
       {/* ===== BOTTOM SECTION: Blue gradient with floating visuals ===== */}
-      <div className="relative flex-1 min-h-[50vh] lg:min-h-[55vh]">
+      <div className="relative flex-1 min-h-[55vh] lg:min-h-[60vh]">
         {/* Deep blue gradient background */}
         <div className="absolute inset-0 bg-gradient-to-b from-[hsl(210_70%_20%)] via-[hsl(205_80%_38%)] to-[hsl(200_90%_50%)] -z-10" />
         
