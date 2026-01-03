@@ -20,7 +20,8 @@ const SecurityCard = ({
     initial={{ opacity: 0, y: 40, scale: 0.85 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
     transition={{ duration: 1, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-    className={`absolute ${position} z-20`}
+    className={`absolute ${position} z-20 will-change-transform`}
+    style={{ contain: 'layout' }}
   >
     <motion.div
       animate={{ y: [0, -12, 0] }}
@@ -64,7 +65,8 @@ const NetworkNode = ({
     initial={{ opacity: 0, scale: 0 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.8, delay, type: "spring", stiffness: 160 }}
-    className={`absolute ${position} z-20`}
+    className={`absolute ${position} z-20 will-change-transform`}
+    style={{ contain: 'layout' }}
   >
     <motion.div
       animate={{ y: [0, -10, 0], scale: [1, 1.04, 1] }}
@@ -140,9 +142,9 @@ const ConnectionLines = () => (
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden overflow-x-hidden">
       {/* ===== FULL BLUE GRADIENT BACKGROUND ===== */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220_45%_8%)] via-[hsl(210_75%_28%)] to-[hsl(200_90%_52%)] -z-20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220_45%_8%)] via-[hsl(210_75%_28%)] to-[hsl(200_90%_52%)] -z-20 overflow-hidden" />
       
       {/* Subtle grid overlay */}
       <div 
