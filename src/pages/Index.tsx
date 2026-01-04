@@ -169,11 +169,6 @@ const Index = () => {
           <CustomerJourney />
         </div>
 
-        {/* Stats Section - Impact Dashboard */}
-        <div id="stats" data-reveal="scale">
-          <SecurityDashboard />
-        </div>
-
         {/* Enterprise Security Dashboard */}
         <div id="dashboard" data-reveal="scale">
           <SecurityDashboard />
