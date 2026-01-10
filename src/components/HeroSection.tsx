@@ -1,6 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Server, Cloud, Lock, AlertTriangle, Database, FileText, Play, MessageSquare, Users } from "lucide-react";
+import { useRef } from "react";
 
 // Floating security card - glass style (hidden on mobile/tablet)
 const SecurityCard = ({ 
@@ -126,7 +127,6 @@ const ConnectionLines = () => (
         <stop offset="100%" stopColor="rgba(255,255,255,0)" />
       </linearGradient>
     </defs>
-    {/* Horizontal and diagonal connection lines */}
     <motion.line x1="58%" y1="48%" x2="82%" y2="32%" stroke="url(#lineGradient)" strokeWidth="1.5" 
       initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ duration: 1.8, delay: 1.2 }} />
     <motion.line x1="60%" y1="54%" x2="78%" y2="58%" stroke="url(#lineGradient)" strokeWidth="1.5"
@@ -169,19 +169,39 @@ const MobileParticles = () => (
 );
 
 export const HeroSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  // Parallax scroll transforms
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+  
+  // Background moves slower than scroll (parallax effect)
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const glowScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.3]);
+  const glowOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+
   return (
     <section 
+      ref={sectionRef}
       className="relative min-h-screen overflow-hidden"
       style={{ 
         overflowX: 'clip',
         contain: 'paint layout'
       }}
     >
-      {/* ===== FULL BLUE GRADIENT BACKGROUND ===== */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(220_45%_8%)] via-[hsl(210_75%_28%)] to-[hsl(200_90%_52%)] -z-20" />
+      {/* ===== PARALLAX BLUE GRADIENT BACKGROUND ===== */}
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-b from-[hsl(220_45%_8%)] via-[hsl(210_75%_28%)] to-[hsl(200_90%_52%)] -z-20"
+        style={{ y: backgroundY }}
+      />
       
-      {/* Subtle grid overlay */}
-      <div 
+      {/* Subtle grid overlay with parallax */}
+      <motion.div 
         className="absolute inset-0 opacity-[0.04] -z-10"
         style={{
           backgroundImage: `
@@ -189,11 +209,15 @@ export const HeroSection = () => {
             linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
+          y: gridY
         }}
       />
 
-      {/* Soft ambient glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[90vw] max-w-[800px] h-[300px] md:h-[400px] bg-[radial-gradient(ellipse_at_center,hsl(200_90%_50%/0.15)_0%,transparent_70%)] blur-3xl -z-10" />
+      {/* Soft ambient glow with parallax scale */}
+      <motion.div 
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[90vw] max-w-[800px] h-[300px] md:h-[400px] bg-[radial-gradient(ellipse_at_center,hsl(200_90%_50%/0.15)_0%,transparent_70%)] blur-3xl -z-10"
+        style={{ scale: glowScale, opacity: glowOpacity }}
+      />
 
       {/* Connection Lines - Desktop only */}
       <ConnectionLines />
@@ -201,8 +225,11 @@ export const HeroSection = () => {
       {/* Mobile Particles */}
       <MobileParticles />
 
-      {/* ===== HERO CONTENT ===== */}
-      <div className="relative z-20 container mx-auto px-4 sm:px-6 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-36 lg:pb-12">
+      {/* ===== HERO CONTENT WITH PARALLAX ===== */}
+      <motion.div 
+        className="relative z-20 container mx-auto px-4 sm:px-6 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-36 lg:pb-12"
+        style={{ y: contentY, opacity: contentOpacity }}
+      >
         <div className="max-w-4xl mx-auto text-center">
           {/* Announcement Badge */}
           <motion.div
@@ -265,7 +292,7 @@ export const HeroSection = () => {
             </Button>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ===== FLOATING SECURITY CARDS - Left Side (Desktop Only) ===== */}
       <SecurityCard
