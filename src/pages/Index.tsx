@@ -19,15 +19,15 @@ import { HeroSection } from "@/components/HeroSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <StickyHeader />
 
-      <main>
+      <main className="overflow-x-hidden">
         {/* Premium Hero Section */}
         <HeroSection />
 
         {/* Enhanced Threat Intelligence Section */}
-        <section className="relative py-20 md:py-32 overflow-hidden">
+        <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden">
           <div className="container mx-auto relative z-10">
             <div className="text-center mb-16">
               <h2 data-reveal="fade" className="font-display text-3xl md:text-4xl mb-6">
