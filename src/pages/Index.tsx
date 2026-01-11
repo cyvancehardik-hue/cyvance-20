@@ -16,11 +16,14 @@ import BlogResourcesHub from "@/components/BlogResourcesHub";
 import { RedBlueTeamSection } from "@/components/RedBlueTeamSection";
 import { VulnerabilityIntelligenceCTA } from "@/components/VulnerabilityIntelligenceCTA";
 import { HeroSection } from "@/components/HeroSection";
+import { ScrollReveal, StaggerReveal } from "@/components/ScrollReveal";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
       <StickyHeader />
+      <ScrollToTop />
 
       <main className="overflow-x-hidden">
         {/* Premium Hero Section */}
@@ -30,27 +33,28 @@ const Index = () => {
         <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden">
           <div className="container mx-auto relative z-10">
             <div className="text-center mb-16">
-              <h2 data-reveal="fade" className="font-display text-3xl md:text-4xl mb-6">
-                Real-Time Threat Intelligence
-                <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
-                  Neural Defense Matrix
-                </span>
-              </h2>
-              <p data-reveal="slide-up" className="text-muted-foreground max-w-2xl mx-auto text-lg">
-                AI-driven metrics that position your organization ahead of emerging threats through predictive intelligence and quantum-encrypted monitoring systems.
-              </p>
+              <ScrollReveal direction="fade">
+                <h2 className="font-display text-3xl md:text-4xl mb-6">
+                  Real-Time Threat Intelligence
+                  <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
+                    Neural Defense Matrix
+                  </span>
+                </h2>
+              </ScrollReveal>
+              <ScrollReveal direction="up" delay={0.1}>
+                <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                  AI-driven metrics that position your organization ahead of emerging threats through predictive intelligence and quantum-encrypted monitoring systems.
+                </p>
+              </ScrollReveal>
             </div>
-            <div data-reveal="scale">
+            <ScrollReveal direction="scale" delay={0.2}>
               <EnhancedThreatMetrics />
-            </div>
+            </ScrollReveal>
           </div>
           
           {/* Enhanced Background Effects */}
           <div className="absolute inset-0 overflow-hidden">
-            {/* Animated gradient waves */}
             <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-blue)/0.05)] via-transparent to-[hsl(var(--cyber-purple)/0.05)] animate-pulse" />
-            
-            {/* Moving grid pattern */}
             <div 
               className="absolute inset-0 opacity-20"
               style={{
@@ -62,8 +66,6 @@ const Index = () => {
                 animation: "float 20s ease-in-out infinite",
               }}
             />
-            
-            {/* Floating data streams */}
             <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-[hsl(var(--neon-cyan))/0.6] to-transparent animate-pulse" />
             <div className="absolute bottom-1/4 right-0 w-full h-0.5 bg-gradient-to-l from-transparent via-[hsl(var(--electric-green))/0.6] to-transparent animate-pulse" style={{ animationDelay: "1s" }} />
           </div>
@@ -72,19 +74,23 @@ const Index = () => {
         {/* Services */}
         <section id="services" className="container mx-auto py-20 md:py-32">
           <div className="text-center mb-20">
-            <h2 data-reveal="fade" className="font-display text-3xl md:text-5xl mb-6">
-              Elite Security
-              <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
-                Operations
-              </span>
-            </h2>
-            <p data-reveal="slide-up" className="text-muted-foreground text-lg max-w-3xl mx-auto">
-              Military-grade solutions engineered for modern threats. AI-powered services backed by elite security operations that never sleep.
-            </p>
+            <ScrollReveal direction="fade">
+              <h2 className="font-display text-3xl md:text-5xl mb-6">
+                Elite Security
+                <span className="block bg-gradient-to-r from-[hsl(var(--neon-blue))] to-[hsl(var(--cyber-purple))] bg-clip-text text-transparent">
+                  Operations
+                </span>
+              </h2>
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={0.1}>
+              <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                Military-grade solutions engineered for modern threats. AI-powered services backed by elite security operations that never sleep.
+              </p>
+            </ScrollReveal>
           </div>
           
-          <div className="grid lg:grid-cols-3 gap-8">
-            <article data-reveal="slide-up" className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
+          <StaggerReveal staggerDelay={0.15} direction="up" className="grid lg:grid-cols-3 gap-8">
+            <article className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
               <div className="scan-line mb-6">
                 <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--neon-blue)/0.05)] border border-[hsl(var(--neon-blue)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--neon-blue)/0.4)] transition-all duration-300">
                   <ShieldCheck className="h-8 w-8 text-[hsl(var(--neon-blue))]" />
@@ -110,7 +116,7 @@ const Index = () => {
               </ul>
             </article>
             
-            <article data-reveal="slide-up" className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--cyber-purple)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
+            <article className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--cyber-purple)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
               <div className="scan-line mb-6">
                 <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--cyber-purple)/0.2)] to-[hsl(var(--cyber-purple)/0.05)] border border-[hsl(var(--cyber-purple)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--cyber-purple)/0.4)] transition-all duration-300">
                   <AlertTriangle className="h-8 w-8 text-[hsl(var(--cyber-purple))]" />
@@ -136,7 +142,7 @@ const Index = () => {
               </ul>
             </article>
             
-            <article data-reveal="slide-up" className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-cyan)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
+            <article className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-cyan)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
               <div className="scan-line mb-6">
                 <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-cyan)/0.2)] to-[hsl(var(--neon-cyan)/0.05)] border border-[hsl(var(--neon-cyan)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--neon-cyan)/0.4)] transition-all duration-300">
                   <Cloud className="h-8 w-8 text-[hsl(var(--neon-cyan))]" />
@@ -161,78 +167,92 @@ const Index = () => {
                 </li>
               </ul>
             </article>
-          </div>
+          </StaggerReveal>
         </section>
 
         {/* Customer Journey */}
-        <div data-reveal="fade">
+        <ScrollReveal direction="up">
           <CustomerJourney />
-        </div>
+        </ScrollReveal>
 
         {/* Enterprise Security Dashboard */}
-        <div id="dashboard" data-reveal="scale">
-          <SecurityDashboard />
-        </div>
+        <ScrollReveal direction="scale" delay={0.1}>
+          <div id="dashboard">
+            <SecurityDashboard />
+          </div>
+        </ScrollReveal>
 
         {/* Testimonials */}
         <section id="testimonials" className="container mx-auto py-16 md:py-24">
           <header className="mb-12">
-            <h2 data-reveal="fade" className="font-display text-3xl md:text-4xl mb-4">Trusted by Innovators</h2>
-            <p data-reveal="slide-up" className="text-muted-foreground text-lg">What security leaders say about Cyvance.</p>
+            <ScrollReveal direction="fade">
+              <h2 className="font-display text-3xl md:text-4xl mb-4">Trusted by Innovators</h2>
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={0.1}>
+              <p className="text-muted-foreground text-lg">What security leaders say about Cyvance.</p>
+            </ScrollReveal>
           </header>
-          <div data-reveal="slide-up">
+          <ScrollReveal direction="left" delay={0.2}>
             <TestimonialsMarquee />
-          </div>
+          </ScrollReveal>
         </section>
 
         {/* Enhanced CTA Section */}
-        <div id="contact" data-reveal="scale">
-          <EnhancedCTA />
-        </div>
+        <ScrollReveal direction="scale">
+          <div id="contact">
+            <EnhancedCTA />
+          </div>
+        </ScrollReveal>
 
         {/* Incident Severity Dashboard */}
-        <div data-reveal="fade">
+        <ScrollReveal direction="up" delay={0.1}>
           <IncidentSeverityChart />
-        </div>
+        </ScrollReveal>
 
         {/* Who We Are */}
-        <div data-reveal="slide-up">
+        <ScrollReveal direction="right">
           <WhoWeAre />
-        </div>
+        </ScrollReveal>
 
         {/* Why Choose Cyvance - Advanced Cyber-themed Section */}
-        <div id="why-us" data-reveal="scale">
-          <WhyChooseCyvance />
-        </div>
+        <ScrollReveal direction="scale">
+          <div id="why-us">
+            <WhyChooseCyvance />
+          </div>
+        </ScrollReveal>
 
         {/* Red Team / Blue Team Simulation Section */}
-        <div data-reveal="scale">
+        <ScrollReveal direction="up">
           <RedBlueTeamSection />
-        </div>
+        </ScrollReveal>
 
         {/* Vulnerability Intelligence CTA Section */}
-        <div data-reveal="scale">
+        <ScrollReveal direction="scale" delay={0.1}>
           <VulnerabilityIntelligenceCTA />
-        </div>
+        </ScrollReveal>
 
         {/* Blog & Resources Intelligence Hub */}
-        <div id="blogs" data-reveal="fade">
-          <BlogResourcesHub />
-        </div>
+        <ScrollReveal direction="fade">
+          <div id="blogs">
+            <BlogResourcesHub />
+          </div>
+        </ScrollReveal>
       </main>
 
       <footer className="border-t border-border py-12 bg-gradient-to-b from-background to-background/50">
         <div className="container mx-auto">
-          <div data-reveal="fade" className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
-            <p className="hover:text-foreground transition-colors">
-              © {new Date().getFullYear()} Cyvance Security. All rights reserved.
-            </p>
-            <nav className="flex items-center gap-8">
-              <a href="#" className="hover:text-foreground transition-colors hover:scale-105 transform duration-200">Privacy</a>
-              <a href="#" className="hover:text-foreground transition-colors hover:scale-105 transform duration-200">Terms</a>
-              <a href="#" className="hover:text-foreground transition-colors hover:scale-105 transform duration-200">Status</a>
-            </nav>
-          </div>
+          <ScrollReveal direction="fade">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
+              <p className="hover:text-foreground transition-colors">
+                © {new Date().getFullYear()} Cyvance Security. All rights reserved.
+              </p>
+              <nav className="flex items-center gap-8">
+                <a href="#" className="hover:text-foreground transition-colors hover:scale-105 transform duration-200">Privacy</a>
+                <a href="#" className="hover:text-foreground transition-colors hover:scale-105 transform duration-200">Terms</a>
+                <a href="#" className="hover:text-foreground transition-colors hover:scale-105 transform duration-200">Status</a>
+              </nav>
+            </div>
+          </ScrollReveal>
         </div>
       </footer>
     </div>

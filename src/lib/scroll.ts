@@ -12,8 +12,9 @@ export const easeInOutQuart = (t: number) =>
 export const easeOutExpo = (t: number) =>
   t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
 
-export const smoothScrollTo = (targetY: number, duration = 1000) => {
+export const smoothScrollTo = (target: number | "top", duration = 1000) => {
   const startY = window.scrollY || window.pageYOffset;
+  const targetY = target === "top" ? 0 : target;
   const diff = targetY - startY;
   const start = performance.now();
 
