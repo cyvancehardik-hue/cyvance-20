@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { PageTransition } from "./PageTransition";
+import { PageLoader } from "./PageLoader";
 import Index from "@/pages/Index";
 import NotFound from "@/pages/NotFound";
 import AboutUs from "@/pages/AboutUs";
@@ -14,7 +15,11 @@ export const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <>
+      <AnimatePresence mode="wait">
+        <PageLoader key={`loader-${location.pathname}`} />
+      </AnimatePresence>
+      <AnimatePresence mode="wait" initial={false}>
       <Routes location={location} key={location.pathname}>
         <Route
           path="/"
@@ -81,7 +86,8 @@ export const AnimatedRoutes = () => {
           }
         />
       </Routes>
-    </AnimatePresence>
+      </AnimatePresence>
+    </>
   );
 };
 
