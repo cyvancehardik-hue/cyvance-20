@@ -16,7 +16,7 @@ import BlogResourcesHub from "@/components/BlogResourcesHub";
 import { RedBlueTeamSection } from "@/components/RedBlueTeamSection";
 import { VulnerabilityIntelligenceCTA } from "@/components/VulnerabilityIntelligenceCTA";
 import { HeroSection } from "@/components/HeroSection";
-import { ScrollReveal, StaggerReveal } from "@/components/ScrollReveal";
+import { ScrollReveal, StaggerReveal, StaggerGrid, StaggerList, StaggerText } from "@/components/ScrollReveal";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 const Index = () => {
@@ -89,7 +89,7 @@ const Index = () => {
             </ScrollReveal>
           </div>
           
-          <StaggerReveal staggerDelay={0.15} direction="up" className="grid lg:grid-cols-3 gap-8">
+          <StaggerGrid staggerDelay={0.15} className="grid lg:grid-cols-3 gap-8">
             <article className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
               <div className="scan-line mb-6">
                 <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--neon-blue)/0.05)] border border-[hsl(var(--neon-blue)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--neon-blue)/0.4)] transition-all duration-300">
@@ -100,20 +100,20 @@ const Index = () => {
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Continuous AI-driven risk analysis with predictive threat modeling and automated vulnerability discovery.
               </p>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+              <StaggerList className="space-y-3 text-sm text-muted-foreground">
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
                   Continuous security posture monitoring
-                </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                </span>
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
                   Automated compliance reporting
-                </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                </span>
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]" />
                   Executive security scorecards
-                </li>
-              </ul>
+                </span>
+              </StaggerList>
             </article>
             
             <article className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--cyber-purple)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
@@ -126,20 +126,20 @@ const Index = () => {
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Elite red team operations fusing human expertise with advanced automation to expose vulnerabilities before adversaries strike.
               </p>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+              <StaggerList className="space-y-3 text-sm text-muted-foreground">
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--cyber-purple))]" />
                   Advanced persistent threat simulation
-                </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                </span>
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--cyber-purple))]" />
                   Social engineering assessments
-                </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                </span>
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--cyber-purple))]" />
                   Zero-day vulnerability research
-                </li>
-              </ul>
+                </span>
+              </StaggerList>
             </article>
             
             <article className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-cyan)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
@@ -152,22 +152,22 @@ const Index = () => {
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Next-generation cloud architecture with micro-segmentation and serverless protection across multi-cloud environments.
               </p>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+              <StaggerList className="space-y-3 text-sm text-muted-foreground">
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-cyan))]" />
                   Kubernetes security hardening
-                </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                </span>
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-cyan))]" />
                   Multi-cloud compliance automation
-                </li>
-                <li className="flex items-center gap-3 hover:text-foreground transition-colors">
+                </span>
+                <span className="flex items-center gap-3 hover:text-foreground transition-colors">
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-cyan))]" />
                   Infrastructure as Code security
-                </li>
-              </ul>
+                </span>
+              </StaggerList>
             </article>
-          </StaggerReveal>
+          </StaggerGrid>
         </section>
 
         {/* Customer Journey */}
