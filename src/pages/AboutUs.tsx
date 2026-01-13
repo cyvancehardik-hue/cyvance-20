@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { StickyHeader } from "@/components/StickyHeader";
 import useScrollReveal from "@/hooks/useScrollReveal";
+import { StaggerGrid, StaggerItem, ScrollReveal } from "@/components/ScrollReveal";
 
 const AboutUs = () => {
   // Initialize scroll reveal
@@ -135,24 +136,26 @@ const AboutUs = () => {
             </p>
           </div>
           
-          <div className="grid lg:grid-cols-4 gap-8">
+          <StaggerGrid className="grid lg:grid-cols-4 gap-8" staggerDelay={0.12}>
             {coreValues.map((value, index) => {
               const Icon = value.icon;
               return (
-                <article key={value.title} data-reveal="slide-up" className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--${value.color})/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105">
-                  <div className="scan-line mb-6">
-                    <div className={`h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--${value.color})/0.2)] to-[hsl(var(--${value.color})/0.05)] border border-[hsl(var(--${value.color})/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--${value.color})/0.4)] transition-all duration-300`}>
-                      <Icon className={`h-8 w-8 text-[hsl(var(--${value.color}))]`} />
+                <StaggerItem key={value.title}>
+                  <article className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group hover:-translate-y-3 hover:scale-105 h-full">
+                    <div className="scan-line mb-6">
+                      <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--neon-blue)/0.05)] border border-[hsl(var(--neon-blue)/0.3)] group-hover:shadow-[0_0_25px_hsl(var(--neon-blue)/0.4)] transition-all duration-300">
+                        <Icon className="h-8 w-8 text-[hsl(var(--neon-blue))]" />
+                      </div>
                     </div>
-                  </div>
-                  <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300">{value.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {value.description}
-                  </p>
-                </article>
+                    <h3 className="text-xl font-display mb-4 group-hover:text-glow transition-all duration-300">{value.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {value.description}
+                    </p>
+                  </article>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerGrid>
         </section>
 
         {/* Expertise Metrics */}
@@ -170,12 +173,12 @@ const AboutUs = () => {
               </p>
             </div>
             
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <StaggerGrid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8" staggerDelay={0.1}>
               {expertise.map((item, index) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.title} data-reveal="scale" className="text-center">
-                    <div className="glow-card p-8 rounded-2xl hover:shadow-[0_0_50px_hsl(var(--electric-green)/0.3)] transition-all duration-500 group hover:-translate-y-2">
+                  <StaggerItem key={item.title} className="text-center">
+                    <div className="glow-card p-8 rounded-2xl hover:shadow-[0_0_50px_hsl(var(--electric-green)/0.3)] transition-all duration-500 group hover:-translate-y-2 h-full">
                       <div className="h-16 w-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--electric-green)/0.2)] to-[hsl(var(--neon-cyan)/0.1)] border border-[hsl(var(--electric-green)/0.3)] mx-auto mb-6 group-hover:shadow-[0_0_25px_hsl(var(--electric-green)/0.4)] transition-all duration-300">
                         <Icon className="h-8 w-8 text-[hsl(var(--electric-green))]" />
                       </div>
@@ -187,10 +190,10 @@ const AboutUs = () => {
                       <h3 className="text-lg font-semibold mb-2 group-hover:text-glow transition-all duration-300">{item.title}</h3>
                       <p className="text-sm text-muted-foreground">{item.description}</p>
                     </div>
-                  </div>
+                  </StaggerItem>
                 );
               })}
-            </div>
+            </StaggerGrid>
           </div>
           
           {/* Enhanced Background Effects */}
@@ -229,7 +232,7 @@ const AboutUs = () => {
               is engineered to make the digital world a safer, more innovative place for everyone.
             </p>
 
-            <div data-reveal="slide-up" className="grid md:grid-cols-3 gap-8 text-left">
+            <StaggerGrid className="grid md:grid-cols-3 gap-8 text-left" staggerDelay={0.15}>
               {[
                 { 
                   title: "Innovation First", 
@@ -252,16 +255,18 @@ const AboutUs = () => {
               ].map((principle, index) => {
                 const Icon = principle.icon;
                 return (
-                  <article key={principle.title} className="glow-card p-8 rounded-2xl hover:shadow-[0_0_40px_hsl(var(--${principle.color})/0.3)] transition-all duration-500 group hover:-translate-y-2">
-                    <div className={`h-12 w-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--${principle.color})/0.2)] to-[hsl(var(--${principle.color})/0.05)] border border-[hsl(var(--${principle.color})/0.3)] mb-6 group-hover:shadow-[0_0_20px_hsl(var(--${principle.color})/0.4)] transition-all duration-300`}>
-                      <Icon className={`h-6 w-6 text-[hsl(var(--${principle.color}))]`} />
-                    </div>
-                    <h3 className={`text-lg font-bold mb-3 text-[hsl(var(--${principle.color}))] group-hover:text-glow transition-all duration-300`}>{principle.title}</h3>
-                    <p className="text-muted-foreground">{principle.description}</p>
-                  </article>
+                  <StaggerItem key={principle.title}>
+                    <article className="glow-card p-8 rounded-2xl hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group hover:-translate-y-2 h-full">
+                      <div className="h-12 w-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--neon-blue)/0.2)] to-[hsl(var(--neon-blue)/0.05)] border border-[hsl(var(--neon-blue)/0.3)] mb-6 group-hover:shadow-[0_0_20px_hsl(var(--neon-blue)/0.4)] transition-all duration-300">
+                        <Icon className="h-6 w-6 text-[hsl(var(--neon-blue))]" />
+                      </div>
+                      <h3 className="text-lg font-bold mb-3 text-[hsl(var(--neon-blue))] group-hover:text-glow transition-all duration-300">{principle.title}</h3>
+                      <p className="text-muted-foreground">{principle.description}</p>
+                    </article>
+                  </StaggerItem>
                 );
               })}
-            </div>
+            </StaggerGrid>
           </div>
         </section>
 
