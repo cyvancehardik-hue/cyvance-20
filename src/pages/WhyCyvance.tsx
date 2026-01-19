@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { StickyHeader } from "@/components/StickyHeader";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { StaggerGrid, StaggerList, StaggerItem } from "@/components/ScrollReveal";
 
 const differentiators = [
   {
@@ -711,16 +712,13 @@ const WhyCyvance = () => {
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <StaggerGrid staggerDelay={0.15} className="grid lg:grid-cols-3 gap-8">
             {differentiators.map((item, index) => {
               const IconComponent = item.icon;
               return (
                 <motion.article
                   key={index}
                   className="glow-card rounded-2xl p-8 hover:shadow-[0_0_50px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 group relative overflow-hidden"
-                  initial={{ opacity: 0, y: 80, rotateX: -15 }}
-                  animate={differentiatorInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-                  transition={{ delay: index * 0.2, duration: 0.8 }}
                   whileHover={{ 
                     y: -15,
                     scale: 1.05,
@@ -791,15 +789,11 @@ const WhyCyvance = () => {
                     {item.description}
                   </motion.p>
                   
-                  <ul className="space-y-3 text-sm text-muted-foreground relative z-10">
+                  <StaggerList staggerDelay={0.08} className="space-y-3 text-sm text-muted-foreground relative z-10">
                     {['Advanced threat detection', 'Real-time response automation', 'Enterprise-grade security'].map((text, i) => (
-                      <motion.li 
+                      <li 
                         key={i}
                         className="flex items-center gap-3 hover:text-foreground transition-colors"
-                        initial={{ x: -10, opacity: 0 }}
-                        animate={differentiatorInView ? { x: 0, opacity: 1 } : {}}
-                        transition={{ delay: index * 0.2 + i * 0.1 }}
-                        whileHover={{ x: 5 }}
                       >
                         <motion.span 
                           className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--neon-blue))]"
@@ -814,13 +808,13 @@ const WhyCyvance = () => {
                           transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
                         />
                         {text}
-                      </motion.li>
+                      </li>
                     ))}
-                  </ul>
+                  </StaggerList>
                 </motion.article>
               );
             })}
-          </div>
+          </StaggerGrid>
         </div>
       </section>
 
@@ -855,14 +849,11 @@ const WhyCyvance = () => {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <StaggerGrid staggerDelay={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {processSteps.map((step, index) => (
                 <motion.div
                   key={index}
                   className="relative text-center group cursor-pointer"
-                  initial={{ opacity: 0, y: 80, rotateY: -30 }}
-                  animate={processInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
-                  transition={{ delay: index * 0.3, duration: 0.8 }}
                   onHoverStart={() => setCurrentStep(index)}
                   whileHover={{ 
                     scale: 1.08, 
@@ -935,7 +926,7 @@ const WhyCyvance = () => {
                   />
                 </motion.div>
               ))}
-            </div>
+            </StaggerGrid>
           </div>
         </div>
       </section>
@@ -987,19 +978,11 @@ const WhyCyvance = () => {
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 50 }}
-            animate={proofInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
+          <StaggerGrid staggerDelay={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               {stats.map((stat, index) => (
                 <motion.div 
                   key={index} 
                   className="glow-card text-center p-8 rounded-2xl group hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.3)] transition-all duration-500 relative overflow-hidden"
-                  initial={{ opacity: 0, scale: 0.8, rotateX: -20 }}
-                  animate={proofInView ? { opacity: 1, scale: 1, rotateX: 0 } : {}}
-                  transition={{ delay: index * 0.15, duration: 0.6 }}
                   whileHover={{ 
                     scale: 1.1, 
                     y: -10,
@@ -1059,7 +1042,7 @@ const WhyCyvance = () => {
                   </motion.div>
               </motion.div>
             ))}
-          </motion.div>
+          </StaggerGrid>
         </div>
       </section>
 
