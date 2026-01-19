@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Server, Cloud, Lock, AlertTriangle, Database, FileText, Play, MessageSquare, Users } from "lucide-react";
 import { useRef } from "react";
@@ -171,19 +171,33 @@ const MobileParticles = () => (
 export const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   
-  // Parallax scroll transforms
+  // Parallax scroll transforms with smooth spring physics
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"]
   });
   
-  // Background moves slower than scroll (parallax effect)
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const glowScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.3]);
-  const glowOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  // Smooth spring for buttery animations
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+  
+  // Multi-layer parallax - each layer moves at different speeds
+  const backgroundY = useTransform(smoothProgress, [0, 1], ["0%", "40%"]);
+  const gridY = useTransform(smoothProgress, [0, 1], ["0%", "20%"]);
+  const contentY = useTransform(smoothProgress, [0, 1], ["0%", "15%"]);
+  const contentOpacity = useTransform(smoothProgress, [0, 0.5], [1, 0]);
+  const glowScale = useTransform(smoothProgress, [0, 0.5], [1, 1.5]);
+  const glowOpacity = useTransform(smoothProgress, [0, 0.6], [1, 0]);
+  
+  // Floating elements parallax (cards and nodes move faster for depth)
+  const floatingLeftY = useTransform(smoothProgress, [0, 1], ["0%", "25%"]);
+  const floatingRightY = useTransform(smoothProgress, [0, 1], ["0%", "35%"]);
+  const floatingCenterY = useTransform(smoothProgress, [0, 1], ["0%", "20%"]);
+  const floatingScale = useTransform(smoothProgress, [0, 0.5], [1, 0.9]);
+  const floatingOpacity = useTransform(smoothProgress, [0, 0.6], [1, 0]);
 
   return (
     <section 
@@ -219,11 +233,118 @@ export const HeroSection = () => {
         style={{ scale: glowScale, opacity: glowOpacity }}
       />
 
-      {/* Connection Lines - Desktop only */}
-      <ConnectionLines />
+      {/* Connection Lines - Desktop only with parallax */}
+      <motion.div style={{ y: floatingRightY, opacity: floatingOpacity }}>
+        <ConnectionLines />
+      </motion.div>
       
       {/* Mobile Particles */}
       <MobileParticles />
+      
+      {/* ===== FLOATING SECURITY CARDS - Left Side with Parallax ===== */}
+      <motion.div 
+        className="hidden lg:block"
+        style={{ y: floatingLeftY, scale: floatingScale, opacity: floatingOpacity }}
+      >
+        <SecurityCard
+          icons={
+            <div className="flex flex-wrap gap-1.5 xl:gap-2 justify-center">
+              <div className="w-8 h-10 xl:w-10 xl:h-12 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                <FileText className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
+              </div>
+              <div className="w-8 h-10 xl:w-10 xl:h-12 bg-red-500 rounded-xl flex items-center justify-center shadow-lg">
+                <AlertTriangle className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
+              </div>
+              <div className="w-8 h-10 xl:w-10 xl:h-12 bg-amber-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Database className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
+              </div>
+            </div>
+          }
+          value="1,247"
+          label="Threats Blocked"
+          delay={0.7}
+          position="left-[2%] xl:left-[3%] top-[38%]"
+        />
+        
+        <SecurityCard
+          icons={
+            <div className="flex flex-wrap gap-1.5 xl:gap-2 justify-center">
+              <div className="w-9 h-8 xl:w-11 xl:h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Play className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
+              </div>
+              <div className="w-8 h-8 xl:w-10 xl:h-10 bg-slate-700 rounded-xl flex items-center justify-center shadow-lg border border-white/10">
+                <Server className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
+              </div>
+            </div>
+          }
+          value="24,892"
+          label="Scans Complete"
+          delay={0.9}
+          position="left-[8%] xl:left-[12%] top-[58%] lg:top-[62%]"
+        />
+
+        <SecurityCard
+          icons={
+            <div className="flex gap-1.5 xl:gap-2 justify-center">
+              <div className="w-8 h-8 xl:w-10 xl:h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                <Cloud className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
+              </div>
+              <div className="w-8 h-8 xl:w-10 xl:h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                <Lock className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
+              </div>
+            </div>
+          }
+          value="99.9%"
+          label="Uptime Protected"
+          delay={1.1}
+          position="left-[1%] xl:left-[2%] bottom-[12%] xl:bottom-[10%] hidden xl:block"
+        />
+      </motion.div>
+
+      {/* ===== CENTER PRODUCT SHOWCASE with Parallax ===== */}
+      <motion.div style={{ y: floatingCenterY, scale: floatingScale, opacity: floatingOpacity }}>
+        <CenterShowcase />
+      </motion.div>
+
+      {/* ===== NETWORK NODES - Right Side with Parallax ===== */}
+      <motion.div 
+        className="hidden lg:block"
+        style={{ y: floatingRightY, scale: floatingScale, opacity: floatingOpacity }}
+      >
+        <NetworkNode color="bg-cyan-400" size={56} delay={0.5} position="right-[18%] xl:right-[20%] top-[32%]" glowColor="rgba(34, 211, 238, 0.45)" />
+        <NetworkNode color="bg-emerald-500" size={46} delay={0.6} position="right-[4%] xl:right-[6%] top-[36%]" glowColor="rgba(16, 185, 129, 0.45)" />
+        <NetworkNode 
+          color="bg-slate-700" 
+          size={54} 
+          delay={0.7} 
+          position="right-[10%] xl:right-[12%] top-[46%]" 
+          icon={<Play className="w-3 h-3 xl:w-4 xl:h-4 text-white" />}
+        />
+        <NetworkNode color="bg-violet-400" size={42} delay={0.8} position="right-[22%] xl:right-[24%] top-[48%]" glowColor="rgba(167, 139, 250, 0.45)" />
+        <NetworkNode 
+          color="bg-slate-600" 
+          size={58} 
+          delay={0.9} 
+          position="right-[3%] xl:right-[4%] top-[52%] hidden xl:block"
+          icon={<MessageSquare className="w-4 h-4 xl:w-5 xl:h-5 text-white" />} 
+        />
+        <NetworkNode color="bg-green-400" size={50} delay={1.0} position="right-[14%] xl:right-[16%] top-[58%]" glowColor="rgba(74, 222, 128, 0.45)" />
+        <NetworkNode color="bg-blue-500" size={44} delay={1.1} position="right-[4%] xl:right-[5%] top-[66%]" glowColor="rgba(59, 130, 246, 0.45)" />
+        <NetworkNode color="bg-purple-300" size={38} delay={1.2} position="right-[24%] xl:right-[26%] top-[64%]" />
+        <NetworkNode color="bg-slate-700" size={48} delay={1.3} position="right-[11%] xl:right-[13%] top-[72%]" icon={<Shield className="w-3 h-3 xl:w-4 xl:h-4 text-cyan-400" />} />
+        <NetworkNode color="bg-red-400" size={42} delay={1.4} position="right-[2%] xl:right-[3%] bottom-[20%] hidden xl:block" glowColor="rgba(248, 113, 113, 0.45)" />
+        <NetworkNode color="bg-orange-400" size={38} delay={1.5} position="right-[20%] xl:right-[22%] bottom-[18%]" glowColor="rgba(251, 146, 60, 0.45)" />
+        <NetworkNode color="bg-emerald-500" size={46} delay={1.6} position="right-[6%] xl:right-[8%] bottom-[12%]" glowColor="rgba(16, 185, 129, 0.45)" />
+        <NetworkNode 
+          color="bg-slate-600" 
+          size={54} 
+          delay={1.7} 
+          position="right-[22%] xl:right-[24%] bottom-[8%] hidden xl:block"
+          icon={<Users className="w-4 h-4 xl:w-5 xl:h-5 text-white" />}
+        />
+        <NetworkNode color="bg-violet-400" size={40} delay={1.8} position="right-[1%] xl:right-[2%] bottom-[6%] hidden xl:block" glowColor="rgba(167, 139, 250, 0.45)" />
+        <NetworkNode color="bg-cyan-400" size={34} delay={1.9} position="right-[14%] xl:right-[16%] bottom-[4%]" glowColor="rgba(34, 211, 238, 0.45)" />
+      </motion.div>
 
       {/* ===== HERO CONTENT WITH PARALLAX ===== */}
       <motion.div 
@@ -293,99 +414,6 @@ export const HeroSection = () => {
           </motion.div>
         </div>
       </motion.div>
-
-      {/* ===== FLOATING SECURITY CARDS - Left Side (Desktop Only) ===== */}
-      <SecurityCard
-        icons={
-          <div className="flex flex-wrap gap-1.5 xl:gap-2 justify-center">
-            <div className="w-8 h-10 xl:w-10 xl:h-12 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
-              <FileText className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
-            </div>
-            <div className="w-8 h-10 xl:w-10 xl:h-12 bg-red-500 rounded-xl flex items-center justify-center shadow-lg">
-              <AlertTriangle className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
-            </div>
-            <div className="w-8 h-10 xl:w-10 xl:h-12 bg-amber-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Database className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
-            </div>
-          </div>
-        }
-        value="1,247"
-        label="Threats Blocked"
-        delay={0.7}
-        position="left-[2%] xl:left-[3%] top-[38%] hidden lg:block"
-      />
-      
-      <SecurityCard
-        icons={
-          <div className="flex flex-wrap gap-1.5 xl:gap-2 justify-center">
-            <div className="w-9 h-8 xl:w-11 xl:h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Play className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
-            </div>
-            <div className="w-8 h-8 xl:w-10 xl:h-10 bg-slate-700 rounded-xl flex items-center justify-center shadow-lg border border-white/10">
-              <Server className="w-3 h-3 xl:w-4 xl:h-4 text-white" />
-            </div>
-          </div>
-        }
-        value="24,892"
-        label="Scans Complete"
-        delay={0.9}
-        position="left-[8%] xl:left-[12%] top-[58%] lg:top-[62%] hidden lg:block"
-      />
-
-      <SecurityCard
-        icons={
-          <div className="flex gap-1.5 xl:gap-2 justify-center">
-            <div className="w-8 h-8 xl:w-10 xl:h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Cloud className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
-            </div>
-            <div className="w-8 h-8 xl:w-10 xl:h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Lock className="w-4 h-4 xl:w-5 xl:h-5 text-white" />
-            </div>
-          </div>
-        }
-        value="99.9%"
-        label="Uptime Protected"
-        delay={1.1}
-        position="left-[1%] xl:left-[2%] bottom-[12%] xl:bottom-[10%] hidden xl:block"
-      />
-
-      {/* ===== CENTER PRODUCT SHOWCASE ===== */}
-      <CenterShowcase />
-
-      {/* ===== NETWORK NODES - Right Side (Desktop Only) ===== */}
-      <NetworkNode color="bg-cyan-400" size={56} delay={0.5} position="right-[18%] xl:right-[20%] top-[32%] hidden lg:block" glowColor="rgba(34, 211, 238, 0.45)" />
-      <NetworkNode color="bg-emerald-500" size={46} delay={0.6} position="right-[4%] xl:right-[6%] top-[36%] hidden lg:block" glowColor="rgba(16, 185, 129, 0.45)" />
-      <NetworkNode 
-        color="bg-slate-700" 
-        size={54} 
-        delay={0.7} 
-        position="right-[10%] xl:right-[12%] top-[46%] hidden lg:block" 
-        icon={<Play className="w-3 h-3 xl:w-4 xl:h-4 text-white" />}
-      />
-      <NetworkNode color="bg-violet-400" size={42} delay={0.8} position="right-[22%] xl:right-[24%] top-[48%] hidden lg:block" glowColor="rgba(167, 139, 250, 0.45)" />
-      <NetworkNode 
-        color="bg-slate-600" 
-        size={58} 
-        delay={0.9} 
-        position="right-[3%] xl:right-[4%] top-[52%] hidden xl:block"
-        icon={<MessageSquare className="w-4 h-4 xl:w-5 xl:h-5 text-white" />} 
-      />
-      <NetworkNode color="bg-green-400" size={50} delay={1.0} position="right-[14%] xl:right-[16%] top-[58%] hidden lg:block" glowColor="rgba(74, 222, 128, 0.45)" />
-      <NetworkNode color="bg-blue-500" size={44} delay={1.1} position="right-[4%] xl:right-[5%] top-[66%] hidden lg:block" glowColor="rgba(59, 130, 246, 0.45)" />
-      <NetworkNode color="bg-purple-300" size={38} delay={1.2} position="right-[24%] xl:right-[26%] top-[64%] hidden lg:block" />
-      <NetworkNode color="bg-slate-700" size={48} delay={1.3} position="right-[11%] xl:right-[13%] top-[72%] hidden lg:block" icon={<Shield className="w-3 h-3 xl:w-4 xl:h-4 text-cyan-400" />} />
-      <NetworkNode color="bg-red-400" size={42} delay={1.4} position="right-[2%] xl:right-[3%] bottom-[20%] hidden xl:block" glowColor="rgba(248, 113, 113, 0.45)" />
-      <NetworkNode color="bg-orange-400" size={38} delay={1.5} position="right-[20%] xl:right-[22%] bottom-[18%] hidden lg:block" glowColor="rgba(251, 146, 60, 0.45)" />
-      <NetworkNode color="bg-emerald-500" size={46} delay={1.6} position="right-[6%] xl:right-[8%] bottom-[12%] hidden lg:block" glowColor="rgba(16, 185, 129, 0.45)" />
-      <NetworkNode 
-        color="bg-slate-600" 
-        size={54} 
-        delay={1.7} 
-        position="right-[22%] xl:right-[24%] bottom-[8%] hidden xl:block"
-        icon={<Users className="w-4 h-4 xl:w-5 xl:h-5 text-white" />}
-      />
-      <NetworkNode color="bg-violet-400" size={40} delay={1.8} position="right-[1%] xl:right-[2%] bottom-[6%] hidden xl:block" glowColor="rgba(167, 139, 250, 0.45)" />
-      <NetworkNode color="bg-cyan-400" size={34} delay={1.9} position="right-[14%] xl:right-[16%] bottom-[4%] hidden lg:block" glowColor="rgba(34, 211, 238, 0.45)" />
 
       {/* Bottom fade to page background */}
       <div className="absolute bottom-0 left-0 right-0 h-20 sm:h-28 bg-gradient-to-t from-background to-transparent pointer-events-none z-30" />
