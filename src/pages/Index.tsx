@@ -18,10 +18,12 @@ import { VulnerabilityIntelligenceCTA } from "@/components/VulnerabilityIntellig
 import { HeroSection } from "@/components/HeroSection";
 import { ScrollReveal, StaggerReveal, StaggerGrid, StaggerList, StaggerText } from "@/components/ScrollReveal";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { CursorGlowTrail } from "@/components/CursorGlowTrail";
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
+      <CursorGlowTrail glowColor="var(--neon-cyan)" glowSize={28} trailLength={25} />
       <StickyHeader />
       <ScrollToTop />
 
