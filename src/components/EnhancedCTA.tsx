@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Scan, Shield, Sparkles } from "lucide-react";
+import { MagneticButton } from "@/components/MagneticButton";
 
 export const EnhancedCTA = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -120,25 +121,29 @@ export const EnhancedCTA = () => {
             {/* CTA Buttons */}
             <div className="mb-8" data-reveal style={{ animationDelay: '0.4s' }}>
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <Button 
-                  variant="hero" 
-                  size="lg" 
-                  className="group relative overflow-hidden hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.6)] hover:scale-105 transform-gpu transition-all duration-300 min-w-[280px]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue))] via-[hsl(var(--cyber-purple))] to-[hsl(var(--neon-blue))] opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse" />
-                  <Scan className="mr-3 h-5 w-5 group-hover:animate-spin transition-all duration-300" />
-                  <span className="relative z-10">Start Security Assessment</span>
-                  <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2 duration-300" />
-                </Button>
+                <MagneticButton strength={0.4} radius={200}>
+                  <Button 
+                    variant="hero" 
+                    size="lg" 
+                    className="group relative overflow-hidden hover:shadow-[0_0_40px_hsl(var(--neon-blue)/0.6)] transform-gpu transition-all duration-300 min-w-[280px]"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--neon-blue))] via-[hsl(var(--cyber-purple))] to-[hsl(var(--neon-blue))] opacity-0 group-hover:opacity-20 transition-opacity duration-300 animate-pulse" />
+                    <Scan className="mr-3 h-5 w-5 group-hover:animate-spin transition-all duration-300" />
+                    <span className="relative z-10">Start Security Assessment</span>
+                    <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-2 duration-300" />
+                  </Button>
+                </MagneticButton>
                 
-                <Button 
-                  variant="neon" 
-                  size="lg" 
-                  className="group relative overflow-hidden hover:shadow-[0_0_30px_hsl(var(--neon-blue)/0.4)] hover:scale-105 transform-gpu transition-all duration-300 min-w-[240px]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[hsl(var(--neon-blue)/0.1)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative z-10">Schedule Consultation</span>
-                </Button>
+                <MagneticButton strength={0.4} radius={180}>
+                  <Button 
+                    variant="neon" 
+                    size="lg" 
+                    className="group relative overflow-hidden hover:shadow-[0_0_30px_hsl(var(--neon-blue)/0.4)] transform-gpu transition-all duration-300 min-w-[240px]"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[hsl(var(--neon-blue)/0.1)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="relative z-10">Schedule Consultation</span>
+                  </Button>
+                </MagneticButton>
               </div>
             </div>
 
