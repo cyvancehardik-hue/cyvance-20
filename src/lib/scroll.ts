@@ -8,18 +8,13 @@ export const easeOutQuart = (t: number) =>
 export const easeInOutQuart = (t: number) =>
   t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
 
-// Premium spring-like easing for buttery smooth scrolling
-export const easeOutExpo = (t: number) =>
-  t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-
-export const smoothScrollTo = (target: number | "top", duration = 1000) => {
+export const smoothScrollTo = (targetY: number, duration = 800) => {
   const startY = window.scrollY || window.pageYOffset;
-  const targetY = target === "top" ? 0 : target;
   const diff = targetY - startY;
   const start = performance.now();
 
-  // For very small scrolls, use native
-  if (Math.abs(diff) < 50) {
+  // Use native smooth scrolling if supported and no custom duration
+  if ('scrollBehavior' in document.documentElement.style && duration === 800) {
     window.scrollTo({ top: targetY, behavior: 'smooth' });
     return;
   }
@@ -27,14 +22,14 @@ export const smoothScrollTo = (target: number | "top", duration = 1000) => {
   const step = (now: number) => {
     const elapsed = now - start;
     const progress = Math.min(1, elapsed / duration);
-    const eased = easeOutExpo(progress); // Use expo for premium feel
+    const eased = easeInOutQuart(progress); // Use more natural easing
     window.scrollTo({ top: startY + diff * eased, left: 0 });
     if (progress < 1) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
 };
 
-export const scrollToId = (id: string, offset = 80, duration = 1000) => {
+export const scrollToId = (id: string, offset = 80, duration = 800) => {
   const el = document.getElementById(id);
   if (!el) return;
   
@@ -53,7 +48,7 @@ export const initSmoothScrolling = () => {
     if (link && link.hash) {
       e.preventDefault();
       const id = link.hash.substring(1);
-      scrollToId(id, 80, 1000); // Slower, smoother scroll
+      scrollToId(id);
       
       // Update URL without triggering scroll
       if (history.pushState) {

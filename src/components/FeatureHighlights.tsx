@@ -1,6 +1,5 @@
 import { Brain, Globe, Shield, Users } from "lucide-react";
 import { useRef, useEffect } from "react";
-import { MagneticCard, MagneticIcon } from "@/components/MagneticButton";
 
 const features = [
   {
@@ -122,31 +121,26 @@ const FeatureCard = ({ feature, index }: FeatureCardProps) => {
   }, [feature.color]);
 
   return (
-    <MagneticCard
-      className="hero-card rounded-2xl p-8 relative overflow-hidden group transition-all duration-500"
-      strength={0.08}
-      tiltStrength={8}
+    <div
+      ref={cardRef}
+      className="hero-card rounded-2xl p-8 relative overflow-hidden group transition-all duration-500 transform-gpu"
+      style={{ 
+        animationDelay: `${index * 200}ms`,
+        perspective: '1000px'
+      }}
     >
-      <div
-        ref={cardRef}
-        style={{ 
-          animationDelay: `${index * 200}ms`,
-        }}
-      >
-        {/* Holographic Border Effect */}
-        <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-[hsl(var(--${feature.color})/0.1)] via-transparent to-[hsl(var(--${feature.color})/0.1)] pointer-events-none`} />
-        
-        {/* 3D Icon Container */}
-        <div className="relative mb-6">
-          <MagneticIcon strength={0.4} className="mx-auto">
-            <div className={`w-20 h-20 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--${feature.color})/0.2)] to-[hsl(var(--${feature.color})/0.05)] border border-[hsl(var(--${feature.color})/0.3)] backdrop-blur-sm group-hover:scale-110 transition-all duration-500 ${getIconAnimation(feature.animation)}`}>
-              <feature.icon className={`w-10 h-10 text-[hsl(var(--${feature.color}))] drop-shadow-[0_0_10px_hsl(var(--${feature.color}))]`} />
-              
-              {/* Pulsing Ring Effect */}
-              <div className={`absolute inset-0 rounded-2xl border-2 border-[hsl(var(--${feature.color})/0.5)] animate-ping opacity-20 group-hover:opacity-40`} />
-            </div>
-          </MagneticIcon>
+      {/* Holographic Border Effect */}
+      <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-[hsl(var(--${feature.color})/0.1)] via-transparent to-[hsl(var(--${feature.color})/0.1)] pointer-events-none`} />
+      
+      {/* 3D Icon Container */}
+      <div className="relative mb-6">
+        <div className={`w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[hsl(var(--${feature.color})/0.2)] to-[hsl(var(--${feature.color})/0.05)] border border-[hsl(var(--${feature.color})/0.3)] backdrop-blur-sm group-hover:scale-110 transition-all duration-500 ${getIconAnimation(feature.animation)}`}>
+          <feature.icon className={`w-10 h-10 text-[hsl(var(--${feature.color}))] drop-shadow-[0_0_10px_hsl(var(--${feature.color}))]`} />
+          
+          {/* Pulsing Ring Effect */}
+          <div className={`absolute inset-0 rounded-2xl border-2 border-[hsl(var(--${feature.color})/0.5)] animate-ping opacity-20 group-hover:opacity-40`} />
         </div>
+      </div>
 
       {/* Content */}
       <div className="relative z-10">
@@ -185,8 +179,7 @@ const FeatureCard = ({ feature, index }: FeatureCardProps) => {
           className="animate-pulse"
         />
       </svg>
-      </div>
-    </MagneticCard>
+    </div>
   );
 };
 

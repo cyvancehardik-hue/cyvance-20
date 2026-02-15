@@ -109,13 +109,6 @@ export default {
 				'gradient-x': {
 					'0%, 100%': { 'background-position': '0% 50%' },
 					'50%': { 'background-position': '100% 50%' }
-				},
-				'shimmer': {
-					'100%': { transform: 'translateX(100%)' }
-				},
-				'skeleton-wave': {
-					'0%': { backgroundPosition: '-200% 0' },
-					'100%': { backgroundPosition: '200% 0' }
 				}
 			},
 			animation: {
@@ -126,9 +119,7 @@ export default {
 				'glow-pulse': 'glow-pulse 2.2s ease-in-out infinite',
 				'node-pulse': 'node-pulse 2s ease-out infinite',
 				'marquee': 'marquee 30s linear infinite',
-				'gradient-x': 'gradient-x 3s ease infinite',
-				'shimmer': 'shimmer 2s infinite',
-				'skeleton-wave': 'skeleton-wave 1.5s ease-in-out infinite'
+				'gradient-x': 'gradient-x 3s ease infinite'
 			}
 		}
 	},
