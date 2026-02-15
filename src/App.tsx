@@ -9,6 +9,8 @@ import AboutUs from "./pages/AboutUs";
 import OurProcess from "./pages/OurProcess";
 import WhyCyvance from "./pages/WhyCyvance";
 import Milestones from "./pages/Milestones";
+import Simulation from "./pages/Simulation";
+import VulnerabilityShowcase from "./pages/VulnerabilityShowcase";
 import ScrollRevealInit from "@/components/ScrollRevealInit";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/our-process" element={<OurProcess />} />
           <Route path="/why-cyvance" element={<WhyCyvance />} />
           <Route path="/milestones" element={<Milestones />} />
+          <Route path="/simulation" element={<Simulation />} />
+          <Route path="/vulnerability-showcase" element={<VulnerabilityShowcase />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
